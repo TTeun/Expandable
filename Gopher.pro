@@ -39,7 +39,6 @@ SOURCES += \
     Widgets/facewidget.cpp \
     Widgets/widgettools.cpp \
     Widgets/delayedexpandablewidget.cpp \
-    Widgets/delayedinspectionwidget.cpp \
     Widgets/gridwidget.cpp \
     Widgets/treewidget.cpp
 
@@ -59,8 +58,8 @@ HEADERS += \
     Widgets/facewidget.h \
     Widgets/widgettools.h \
     Widgets/inspectionwidget.h \
-    Widgets/delayedinspectionwidget.h \
     Widgets/gridwidget.h \
-    Widgets/treewidget.h
+    Widgets/treewidget.h \
+    Widgets/delayedexpandablewidget.h
 
-CONFIG += c++14
+CONFIG += c++14 -Wall

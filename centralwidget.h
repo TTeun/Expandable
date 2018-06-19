@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "Mesh/mesh.h"
-#include "Widgets/expandabletreewidget.h"
+#include "Widgets/treewidget.h"
 
 class CentralWidget : public QWidget {
   Q_OBJECT

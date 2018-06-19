@@ -1,6 +1,13 @@
 #include "face.h"
 
+#include <QString>
+
 Face::Face() {
+}
+
+const QString &Face::getName() {
+  static const auto name = QString("Face");
+  return name;
 }
 
 size_t Face::getVal() const {

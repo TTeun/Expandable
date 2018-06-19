@@ -1,7 +1,6 @@
 #ifndef VERTEXWIDGET_H
 #define VERTEXWIDGET_H
 
-#include <functional>
 #include "gridwidget.h"
 #include "inspectionwidget.h"
 

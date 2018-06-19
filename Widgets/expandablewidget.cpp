@@ -5,10 +5,8 @@
 #include <QVBoxLayout>
 #include "layoutfactory.h"
 
-ExpandableWidget::ExpandableWidget(QWidget *viewable, const QString &name, QWidget *parent)
-    : QWidget(parent),
-      _qPushButton(new QPushButton(QString("+ ") + name, this)),
-      _widget(viewable) {
+ExpandableWidget::ExpandableWidget(QWidget *widget, const QString &name, QWidget *parent)
+    : QWidget(parent), _qPushButton(new QPushButton(QString("+ ") + name, this)), _widget(widget) {
   _qPushButton->setFixedHeight(21);
   _qPushButton->setFocusPolicy(Qt::NoFocus);
   _qPushButton->setContentsMargins(0, 0, 0, 0);
@@ -26,13 +24,13 @@ ExpandableWidget::ExpandableWidget(QWidget *viewable, const QString &name, QWidg
   setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 }
 
+QWidget *ExpandableWidget::getWidget() {
+  return _widget;
+}
+
 void ExpandableWidget::toggleWidgetVisibility() {
   _widget->setVisible(_widget->isHidden());
   auto text = _qPushButton->text();
   text.replace(0, 1, _widget->isHidden() ? "+" : "-");
   _qPushButton->setText(text);
-}
-
-QWidget *ExpandableWidget::widget() const {
-  return _widget;
 }

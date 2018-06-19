@@ -8,19 +8,16 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <vector>
-#include "Widgets/widgettools.h"
+#include "inspectionwidget.h"
+#include "widgettools.h"
 
 template <typename Type, typename TypeWidget>
-class VectorWidget : public QWidget {
+class VectorWidget : public QWidget,
+                     public InspectionWidget<std::vector<Type>, VectorWidget<Type, TypeWidget>> {
  public:
-  VectorWidget(std::vector<Type> &elements, QWidget *parent)
+  VectorWidget(std::vector<Type> *elements, QWidget *parent)
       : QWidget(parent), _elements(elements) {
-    create();
-  }
-
- private:
-  virtual void create() {
-    qDebug() << "create";
+    qDebug() << "Create vectorWidget";
     setObjectName("vectorWidget");
     auto *layout = new QVBoxLayout(this);
     layout->setAlignment(layout, Qt::AlignTop);
@@ -28,8 +25,8 @@ class VectorWidget : public QWidget {
     layout->insertStretch(-1, 1);
     layout->setSpacing(4);
     layout->addWidget(new QLabel(QString("std::vector<") + Type::getName() + ">(" +
-                                 QString::number(_elements.size()) + ")"));
-    for (auto &element : _elements) {
+                                 QString::number(_elements->size()) + ")"));
+    for (auto &element : *_elements) {
       auto *horizontalLayout = new QHBoxLayout();
       horizontalLayout->addWidget(WidgetTools::createIndexLabel(element.getIndex()));
       horizontalLayout->addWidget(TypeWidget::createWidget(&element, this));
@@ -39,8 +36,12 @@ class VectorWidget : public QWidget {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
   }
 
-  bool _delayed = true;
-  std::vector<Type> &_elements;
+  ~VectorWidget() {
+    qDebug() << "Destroy vectorWidget";
+  }
+
+ private:
+  std::vector<Type> *_elements;
 };
 
 #endif  // VECTORWIDGET_H

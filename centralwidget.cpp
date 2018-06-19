@@ -7,7 +7,7 @@
 #include <QSpinBox>
 #include <QVBoxLayout>
 #include "Mesh/vertex.h"
-#include "Widgets/delayedinspectionwidget.h"
+#include "Widgets/delayedexpandablewidget.h"
 #include "Widgets/expandablewidget.h"
 #include "Widgets/meshwidget.h"
 #include "Widgets/vertexwidget.h"

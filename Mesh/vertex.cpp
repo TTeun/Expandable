@@ -1,6 +1,13 @@
 #include "vertex.h"
 
+#include <QString>
+
 Vertex::Vertex() {
+}
+
+const QString &Vertex::getName() {
+  static const auto name = QString("Vertex");
+  return name;
 }
 
 size_t Vertex::getIndex() const {

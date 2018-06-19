@@ -1,17 +1,16 @@
 #ifndef EDGE_H
 #define EDGE_H
 
-#include <QString>
+#include <cstddef>
 
 class Vertex;
+class QString;
 
 class HalfEdge {
  public:
   HalfEdge();
 
-  static const QString getName() {
-    return "HalfEdge";
-  }
+  static const QString& getName();
 
   size_t getIndex() const;
 

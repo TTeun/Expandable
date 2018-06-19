@@ -25,7 +25,7 @@ class DelayedExpandableWidget : public QWidget {
  private:
   QPushButton *_qPushButton;
   const std::function<QWidget *()> _widgetBuilder;
-  QWidget *_containedWidget = nullptr;
+  QWidget *_widget = nullptr;
 };
 
 #endif  // DELAYEDEXPANDABLEWIDGET_H

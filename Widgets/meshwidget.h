@@ -1,10 +1,8 @@
 #ifndef MESHWIDGET_H
 #define MESHWIDGET_H
 
-#include <QWidget>
-#include <functional>
-#include "treewidget.h"
 #include "inspectionwidget.h"
+#include "treewidget.h"
 
 class Mesh;
 class MeshWidget;

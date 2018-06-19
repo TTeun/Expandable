@@ -13,8 +13,10 @@ class Mesh {
 
   const std::vector<Vertex> &getVertices() const;
   std::vector<Vertex> &getVertices();
+
   const std::vector<Face> &getFaces() const;
   std::vector<Face> &getFaces();
+
   const std::vector<HalfEdge> &getHalfEdges() const;
   std::vector<HalfEdge> &getHalfEdges();
 

@@ -7,16 +7,16 @@
 class ExpandableWidget : public QWidget {
   Q_OBJECT
  public:
-  ExpandableWidget(QWidget *viewable, const QString &name, QWidget *parent);
+  ExpandableWidget(QWidget *widget, const QString &name, QWidget *parent);
 
-  QWidget *widget() const;
+  QWidget *getWidget();
 
- private slots:
+ protected slots:
   virtual void toggleWidgetVisibility();
 
- private:
+ protected:
   QPushButton *_qPushButton;
-  QWidget *_widget;
+  QWidget *_widget = nullptr;
 };
 
 #endif  // EXPANDABLEWIDGET_H

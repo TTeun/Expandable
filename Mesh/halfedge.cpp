@@ -1,6 +1,13 @@
 #include "halfedge.h"
 
+#include <QString>
+
 HalfEdge::HalfEdge() {
+}
+
+const QString &HalfEdge::getName() {
+  static const auto name = QString("HalfEdge");
+  return name;
 }
 
 size_t HalfEdge::getIndex() const {

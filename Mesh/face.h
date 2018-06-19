@@ -1,15 +1,15 @@
 #ifndef FACE_H
 #define FACE_H
 
-#include <QString>
+#include <cstddef>
+
+class QString;
 
 class Face {
  public:
   Face();
 
-  static const QString getName() {
-    return "Face";
-  }
+  static const QString &getName();
 
   size_t getVal() const;
   size_t getIndex() const;

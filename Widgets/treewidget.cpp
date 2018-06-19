@@ -9,7 +9,7 @@ TreeWidget::TreeWidget(QWidget *parent) : QWidget(parent) {
   initLayout();
 }
 
-TreeWidget::TreeWidget(const std::initializer_list<ExpandableWidget *> &widgets, QWidget *parent)
+TreeWidget::TreeWidget(const std::initializer_list<QWidget *> &widgets, QWidget *parent)
     : QWidget(parent), _widgets(widgets) {
   initLayout();
   for (auto widgetIt = _widgets.begin(); widgetIt != _widgets.end(); ++widgetIt) {
@@ -17,15 +17,14 @@ TreeWidget::TreeWidget(const std::initializer_list<ExpandableWidget *> &widgets,
   }
 }
 
-void TreeWidget::addWidget(ExpandableWidget *newWidget) {
+void TreeWidget::addWidget(QWidget *newWidget) {
   newWidget->setParent(this);
-  newWidget->widget()->setParent(newWidget);
   _widgets.push_back(newWidget);
   layout()->addWidget(newWidget);
 }
 
-void TreeWidget::addWidgets(const std::initializer_list<ExpandableWidget *> &newWidgets) {
-  std::for_each(newWidgets.begin(), newWidgets.end(), [this](ExpandableWidget *newWidget) {
+void TreeWidget::addWidgets(const std::initializer_list<QWidget *> &newWidgets) {
+  std::for_each(newWidgets.begin(), newWidgets.end(), [this](QWidget *newWidget) {
     this->addWidget(newWidget);
   });
 }
@@ -36,6 +35,6 @@ void TreeWidget::initLayout() {
   setLayout(layout);
 }
 
-const std::vector<ExpandableWidget *> &TreeWidget::widgets() const {
+const std::vector<QWidget *> &TreeWidget::widgets() const {
   return _widgets;
 }
