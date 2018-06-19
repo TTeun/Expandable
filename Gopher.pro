@@ -23,43 +23,44 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
+
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
     centralwidget.cpp \
-    expandablewidget.cpp \
-    expandabletreewidget.cpp \
+    Widgets/expandablewidget.cpp \
     Mesh/mesh.cpp \
     Mesh/vertex.cpp \
     Mesh/face.cpp \
     Mesh/halfedge.cpp \
-    Mesh/meshwidget.cpp \
-    Mesh/vertexwidget.cpp \
-    Mesh/halfedgewidget.cpp \
-    Mesh/facewidget.cpp \
-    Mesh/widgettools.cpp \
-    delayedexpandablewidget.cpp \
-    delayedinspectionwidget.cpp \
-    gridwidget.cpp
+    Widgets/meshwidget.cpp \
+    Widgets/vertexwidget.cpp \
+    Widgets/halfedgewidget.cpp \
+    Widgets/facewidget.cpp \
+    Widgets/widgettools.cpp \
+    Widgets/delayedexpandablewidget.cpp \
+    Widgets/delayedinspectionwidget.cpp \
+    Widgets/gridwidget.cpp \
+    Widgets/treewidget.cpp
 
 HEADERS += \
         mainwindow.h \
     centralwidget.h \
-    expandablewidget.h \
-    expandabletreewidget.h \
+    Widgets/expandablewidget.h \
     Mesh/mesh.h \
     Mesh/vertex.h \
     Mesh/face.h \
-    vectorwidget.h \
+    Widgets/vectorwidget.h \
     Mesh/halfedge.h \
-    Mesh/meshwidget.h \
+    Widgets/meshwidget.h \
     layoutfactory.h \
-    Mesh/vertexwidget.h \
-    Mesh/halfedgewidget.h \
-    Mesh/facewidget.h \
-    Mesh/widgettools.h \
-    inspectionwidget.h \
-    delayedinspectionwidget.h \
-    gridwidget.h
+    Widgets/vertexwidget.h \
+    Widgets/halfedgewidget.h \
+    Widgets/facewidget.h \
+    Widgets/widgettools.h \
+    Widgets/inspectionwidget.h \
+    Widgets/delayedinspectionwidget.h \
+    Widgets/gridwidget.h \
+    Widgets/treewidget.h
 
 CONFIG += c++14

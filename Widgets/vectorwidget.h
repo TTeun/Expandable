@@ -8,7 +8,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <vector>
-#include "Mesh/widgettools.h"
+#include "Widgets/widgettools.h"
 
 template <typename Type, typename TypeWidget>
 class VectorWidget : public QWidget {

@@ -2,7 +2,7 @@
 
 #include <functional>
 
-DelayedInspectionWidget::DelayedInspectionWidget(WidgetBuilder widgetBuilder,
+DelayedExpandableWidget::DelayedExpandableWidget(WidgetBuilder widgetBuilder,
                                                  const QString &name,
                                                  QWidget *parent)
     : QWidget(parent),
@@ -19,7 +19,7 @@ DelayedInspectionWidget::DelayedInspectionWidget(WidgetBuilder widgetBuilder,
   QObject::connect(_qPushButton, SIGNAL(released()), SLOT(toggleWidgetVisibility()));
 }
 
-void DelayedInspectionWidget::toggleWidgetVisibility() {
+void DelayedExpandableWidget::toggleWidgetVisibility() {
   bool wasVisible = _containedWidget != nullptr;
   if (not wasVisible) {
     create();
@@ -33,7 +33,7 @@ void DelayedInspectionWidget::toggleWidgetVisibility() {
   _qPushButton->setText(text);
 }
 
-void DelayedInspectionWidget::create() {
+void DelayedExpandableWidget::create() {
   _containedWidget = _widgetBuilder();
   layout()->addWidget(_containedWidget);
   layout()->setAlignment(Qt::AlignTop);

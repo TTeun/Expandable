@@ -5,7 +5,7 @@
 #include <QLabel>
 #include <cassert>
 #include <functional>
-#include "vertex.h"
+#include "../Mesh/vertex.h"
 #include "widgettools.h"
 
 #include <QDebug>

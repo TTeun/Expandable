@@ -3,13 +3,13 @@
 
 #include <QWidget>
 #include <functional>
-#include "expandabletreewidget.h"
+#include "treewidget.h"
 #include "inspectionwidget.h"
 
 class Mesh;
 class MeshWidget;
 
-class MeshWidget : public ExpandableTreeWidget, public InspectionWidget<Mesh, MeshWidget> {
+class MeshWidget : public TreeWidget, public InspectionWidget<Mesh, MeshWidget> {
   Q_OBJECT
 
  public:

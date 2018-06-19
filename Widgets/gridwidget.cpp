@@ -1,7 +1,7 @@
 #include "gridwidget.h"
 
 #include <QGridLayout>
-#include "Mesh/widgettools.h"
+#include "widgettools.h"
 
 GridWidget::GridWidget(QWidget *parent)
     : QGroupBox(parent), _layout(WidgetTools::createInspectionWidgetLayout(this)) {

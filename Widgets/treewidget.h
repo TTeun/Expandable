@@ -1,5 +1,5 @@
-#ifndef EXPANDABLETREEWIDGET_H
-#define EXPANDABLETREEWIDGET_H
+#ifndef TREEWIDGET_H
+#define TREEWIDGET_H
 
 #include <QWidget>
 #include <initializer_list>
@@ -7,13 +7,13 @@
 
 class ExpandableWidget;
 
-class ExpandableTreeWidget : public QWidget {
+class TreeWidget : public QWidget {
   Q_OBJECT
 
  public:
-  ExpandableTreeWidget(QWidget *parent);
+  TreeWidget(QWidget *parent);
 
-  ExpandableTreeWidget(const std::initializer_list<ExpandableWidget *> &widgets, QWidget *parent);
+  TreeWidget(const std::initializer_list<ExpandableWidget *> &widgets, QWidget *parent);
 
   void addWidget(ExpandableWidget *newWidget);
 
@@ -27,4 +27,4 @@ class ExpandableTreeWidget : public QWidget {
   std::vector<ExpandableWidget *> _widgets;
 };
 
-#endif  // EXPANDABLETREEWIDGET_H
+#endif  // TREEWIDGET_H

@@ -9,12 +9,12 @@
 #include <functional>
 #include "layoutfactory.h"
 
-class DelayedInspectionWidget : public QWidget {
+class DelayedExpandableWidget : public QWidget {
   Q_OBJECT
  public:
   typedef std::function<QWidget *()> WidgetBuilder;
 
-  DelayedInspectionWidget(WidgetBuilder widgetBuilder, const QString &name, QWidget *parent);
+  DelayedExpandableWidget(WidgetBuilder widgetBuilder, const QString &name, QWidget *parent);
 
  protected:
   virtual void create();

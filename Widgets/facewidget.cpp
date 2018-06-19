@@ -4,7 +4,7 @@
 #include <QLabel>
 #include <QSpinBox>
 #include <cassert>
-#include "face.h"
+#include "../Mesh/face.h"
 #include "widgettools.h"
 
 // FaceWidget::FaceWidget(Face *face, QWidget *parent) : InspectionWidget(parent), _face(face) {

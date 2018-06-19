@@ -6,13 +6,12 @@
 #include <QPalette>
 #include <QSpinBox>
 #include <QVBoxLayout>
-#include "Mesh/meshwidget.h"
-#include "expandablewidget.h"
-#include "layoutfactory.h"
-
 #include "Mesh/vertex.h"
-#include "Mesh/vertexwidget.h"
-#include "delayedinspectionwidget.h"
+#include "Widgets/delayedinspectionwidget.h"
+#include "Widgets/expandablewidget.h"
+#include "Widgets/meshwidget.h"
+#include "Widgets/vertexwidget.h"
+#include "layoutfactory.h"
 
 CentralWidget::CentralWidget(QWidget* parent) : QWidget(parent), _treeWidget(this) {
   setObjectName("centralWidget");
@@ -36,7 +35,7 @@ CentralWidget::CentralWidget(QWidget* parent) : QWidget(parent), _treeWidget(thi
   layout->insertStretch(-1, 1);
   setLayout(layout);
   _treeWidget.addWidget(new ExpandableWidget(
-      new DelayedInspectionWidget(MeshWidget::createWidgetBuilder(&_mesh, this), "Mesh", this),
+      new DelayedExpandableWidget(MeshWidget::createWidgetBuilder(&_mesh, this), "Mesh", this),
       "Model",
       this));
 

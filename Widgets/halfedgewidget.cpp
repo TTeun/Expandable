@@ -6,8 +6,8 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <cassert>
-#include "face.h"
-#include "halfedge.h"
+#include "../Mesh/face.h"
+#include "../Mesh/halfedge.h"
 #include "widgettools.h"
 
 HalfEdgeWidget::HalfEdgeWidget(HalfEdge *halfEdge, QWidget *parent)
