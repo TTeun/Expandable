@@ -67,6 +67,7 @@ void OpenGlWidget::paintGL() {
   QOpenGLVertexArrayObject::Binder vaoBinder(&_renderObjects[0]->_vao);
   m_program->bind();
   glPointSize(20);
+  glDrawArrays(GL_LINE_STRIP, 0, _renderObjects[0]->_data.size() / 6);
   glDrawArrays(GL_POINTS, 0, _renderObjects[0]->_data.size() / 6);
   m_program->release();
 }
