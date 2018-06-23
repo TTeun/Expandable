@@ -9,6 +9,9 @@ class Vertex {
  public:
   Vertex();
 
+  Vertex(double x, double y, size_t index) : _x(x), _y(y), _index(index) {
+  }
+
   static const QString &getName();
 
   double getX() const;

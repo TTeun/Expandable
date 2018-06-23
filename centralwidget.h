@@ -2,7 +2,9 @@
 #define CENTRALWIDGET_H
 
 #include <QWidget>
+
 #include "Mesh/mesh.h"
+#include "Widgets/openglwidget.h"
 #include "Widgets/treewidget.h"
 
 class CentralWidget : public QWidget {
@@ -14,7 +16,8 @@ class CentralWidget : public QWidget {
   ~CentralWidget();
 
  private:
-  TreeWidget _treeWidget;
+  TreeWidget *_treeWidget;
+  OpenGlWidget *_openGlWidget;
   Mesh _mesh;
 };
 

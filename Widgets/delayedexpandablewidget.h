@@ -1,15 +1,14 @@
 #ifndef DELAYEDEXPANDABLEWIDGET_H
 #define DELAYEDEXPANDABLEWIDGET_H
 
-#include <QPushButton>
-#include <QString>
-#include <QVBoxLayout>
-#include <QWidget>
-#include <cassert>
-#include <functional>
-#include "layoutfactory.h"
+#include "expandablewidget.h"
 
-class DelayedExpandableWidget : public QWidget {
+#include <functional>
+
+class QString;
+class QPushButton;
+
+class DelayedExpandableWidget : public ExpandableWidget {
   Q_OBJECT
  public:
   typedef std::function<QWidget *()> WidgetBuilder;
@@ -23,9 +22,7 @@ class DelayedExpandableWidget : public QWidget {
   virtual void toggleWidgetVisibility();
 
  private:
-  QPushButton *_qPushButton;
-  const std::function<QWidget *()> _widgetBuilder;
-  QWidget *_widget = nullptr;
+  const WidgetBuilder _widgetBuilder;
 };
 
 #endif  // DELAYEDEXPANDABLEWIDGET_H

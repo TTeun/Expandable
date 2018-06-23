@@ -7,9 +7,13 @@
 #include "halfedge.h"
 #include "vertex.h"
 
+class QString;
+
 class Mesh {
  public:
   Mesh();
+
+  static const QString &getName();
 
   const std::vector<Vertex> &getVertices() const;
   std::vector<Vertex> &getVertices();

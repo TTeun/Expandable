@@ -1,0 +1,17 @@
+#ifndef DIRECTEXPANDABLEWIDGET_H
+#define DIRECTEXPANDABLEWIDGET_H
+
+#include "expandablewidget.h"
+
+class QPushButton;
+
+class DirectExpandableWidget : public ExpandableWidget {
+  Q_OBJECT
+ public:
+  DirectExpandableWidget(QWidget *widget, const QString &name, QWidget *parent);
+
+ protected slots:
+  virtual void toggleWidgetVisibility();
+};
+
+#endif  // DIRECTEXPANDABLEWIDGET_H

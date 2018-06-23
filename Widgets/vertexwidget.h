@@ -5,7 +5,6 @@
 #include "inspectionwidget.h"
 
 class Vertex;
-class VertexWidget;
 
 class VertexWidget : public GridWidget, public InspectionWidget<Vertex, VertexWidget> {
   Q_OBJECT

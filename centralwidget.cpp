@@ -8,14 +8,15 @@
 #include <QVBoxLayout>
 #include "Mesh/vertex.h"
 #include "Widgets/delayedexpandablewidget.h"
-#include "Widgets/expandablewidget.h"
+#include "Widgets/directexpandablewidget.h"
 #include "Widgets/meshwidget.h"
 #include "Widgets/vertexwidget.h"
 #include "layoutfactory.h"
 
-CentralWidget::CentralWidget(QWidget* parent) : QWidget(parent), _treeWidget(this) {
+CentralWidget::CentralWidget(QWidget* parent)
+    : QWidget(parent), _treeWidget(new TreeWidget(this)), _openGlWidget(new OpenGlWidget(this)) {
   setObjectName("centralWidget");
-  QGroupBox* groupBox = new QGroupBox("GoPhEr", this);
+  QGroupBox* groupBox = new QGroupBox("GoPhEr");
   QVBoxLayout* leftLayout = LayoutFactory::createLayout<QVBoxLayout>(this);
   leftLayout->setAlignment(Qt::AlignTop);
   groupBox->setLayout(leftLayout);
@@ -25,24 +26,33 @@ CentralWidget::CentralWidget(QWidget* parent) : QWidget(parent), _treeWidget(thi
     groupBox->setAutoFillBackground(true);
     groupBox->setPalette(pal);
   }
-  groupBox->setMinimumSize(300, 0);
-  leftLayout->addWidget(&_treeWidget);
+  groupBox->setMinimumWidth(300);
+  groupBox->setMaximumWidth(400);
+  groupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+  groupBox->setFixedWidth(300);
+  leftLayout->addWidget(_treeWidget);
   leftLayout->setSpacing(10);
   leftLayout->setContentsMargins(5, 10, 5, 10);
-  leftLayout->insertStretch(-1, 1);
-  auto* layout = LayoutFactory::createLayout<QHBoxLayout>(this);
+  auto* layout = new QHBoxLayout;
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->setSpacing(0);
   layout->addWidget(groupBox);
-  layout->insertStretch(-1, 1);
+  //  layout->insertStretch(-1, 1);
   setLayout(layout);
-  _treeWidget.addWidget(new ExpandableWidget(
+  layout->addWidget(_openGlWidget);
+  _treeWidget->addWidget(new DirectExpandableWidget(
+      new DelayedExpandableWidget(MeshWidget::createWidgetBuilder(&_mesh, this), "Mesh", this),
+      "Model",
+      this));
+  _treeWidget->addWidget(new DirectExpandableWidget(
       new DelayedExpandableWidget(MeshWidget::createWidgetBuilder(&_mesh, this), "Mesh", this),
       "Model",
       this));
 
   raise();
   setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-  _treeWidget.setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-  for (auto& widgetIt : _treeWidget.widgets()) {
+  _treeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  for (auto& widgetIt : _treeWidget->widgets()) {
     widgetIt->layout()->setContentsMargins(0, 0, 0, 0);
   }
 }

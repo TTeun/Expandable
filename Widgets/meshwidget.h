@@ -5,7 +5,6 @@
 #include "treewidget.h"
 
 class Mesh;
-class MeshWidget;
 
 class MeshWidget : public TreeWidget, public InspectionWidget<Mesh, MeshWidget> {
   Q_OBJECT

@@ -6,7 +6,6 @@
 #include "inspectionwidget.h"
 
 class HalfEdge;
-class HalfEdgeWidget;
 
 class HalfEdgeWidget : public GridWidget, public InspectionWidget<HalfEdge, HalfEdgeWidget> {
   Q_OBJECT

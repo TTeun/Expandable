@@ -8,8 +8,6 @@ class QWidget;
 template <typename Type, typename TypeWidget>
 class InspectionWidget {
  public:
-  InspectionWidget() = default;
-
   static TypeWidget *createWidget(Type *pointerToObject, QWidget *parent) {
     return new TypeWidget(pointerToObject, parent);
   }

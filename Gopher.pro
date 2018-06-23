@@ -28,7 +28,6 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     centralwidget.cpp \
-    Widgets/expandablewidget.cpp \
     Mesh/mesh.cpp \
     Mesh/vertex.cpp \
     Mesh/face.cpp \
@@ -40,12 +39,16 @@ SOURCES += \
     Widgets/widgettools.cpp \
     Widgets/delayedexpandablewidget.cpp \
     Widgets/gridwidget.cpp \
-    Widgets/treewidget.cpp
+    Widgets/treewidget.cpp \
+    Widgets/directexpandablewidget.cpp \
+    Widgets/expandablewidget.cpp \
+    Widgets/openglwidget.cpp \
+    Rendering/renderobject.cpp \
+    Rendering/meshrenderobject.cpp
 
 HEADERS += \
         mainwindow.h \
     centralwidget.h \
-    Widgets/expandablewidget.h \
     Mesh/mesh.h \
     Mesh/vertex.h \
     Mesh/face.h \
@@ -60,6 +63,12 @@ HEADERS += \
     Widgets/inspectionwidget.h \
     Widgets/gridwidget.h \
     Widgets/treewidget.h \
-    Widgets/delayedexpandablewidget.h
+    Widgets/delayedexpandablewidget.h \
+    Widgets/directexpandablewidget.h \
+    Widgets/expandablewidget.h \
+    Widgets/vectorfullcontentswidgetfactory.h \
+    Widgets/openglwidget.h \
+    Rendering/renderobject.h \
+    Rendering/meshrenderobject.h
 
 CONFIG += c++14 -Wall

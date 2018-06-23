@@ -2,6 +2,7 @@
 #define MESHWIDGETTOOLS_H
 
 #include <cstddef>
+#include <limits>
 
 class QLabel;
 class QDoubleSpinBox;
@@ -15,12 +16,15 @@ class WidgetTools {
   WidgetTools() = delete;
 
   static QLabel *createIndexLabel(const size_t index);
-  static QDoubleSpinBox *createDoubleSpinBox(const double initialValue,
-                                             QWidget *parent,
-                                             const char *functionString);
-  static QSpinBox *createConstantSpinBox(const size_t value, QWidget *parent);
+  static QDoubleSpinBox *createDoubleSpinBox(
+      QWidget *parent,
+      const char *functionString,
+      const double initialValue,
+      const double minimumValue = std::numeric_limits<double>::min(),
+      const double maximumValue = std::numeric_limits<double>::max());
+  static QSpinBox *createConstantSpinBox(QWidget *parent, const size_t initialValue);
   static QGridLayout *createInspectionWidgetLayout(QWidget *parent);
-  static QLineEdit *createPointerLineEdit(void *ptr, QWidget *parent);
+  static QLineEdit *createPointerLineEdit(QWidget *parent, void *ptr);
 };
 
 // auto *xSpinBox = new QDoubleSpinBox(this);

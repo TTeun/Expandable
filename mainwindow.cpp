@@ -6,7 +6,7 @@
 static const char* styleSheetString =
     "QPushButton{"
     "  Text-align:left;"
-    "  background-color: rgb(150,150,150)"
+    "  background-color: rgb(240,240,240)"
     "}"
     "QPushButton:hover{ "
     "  background-color: rgb(160,150,150)"
@@ -15,7 +15,7 @@ static const char* styleSheetString =
     "  background-color: rgb(150,150,150)"
     "}"
     "QGroupBox {"
-    "  background-color: rgb(240,240,240);"
+    "  background-color: rgb(200,200,200);"
     "}"
     "QWidget#vectorWidget {"
     "  background-color: rgb(240,240,240);"

@@ -1,7 +1,8 @@
 #include "gridwidget.h"
 
-#include <QGridLayout>
 #include "widgettools.h"
+
+#include <QGridLayout>
 
 GridWidget::GridWidget(QWidget *parent)
     : QGroupBox(parent), _layout(WidgetTools::createInspectionWidgetLayout(this)) {

@@ -1,8 +1,10 @@
 #ifndef VECTORWIDGET_H
 #define VECTORWIDGET_H
 
+#include "vectorfullcontentswidgetfactory.h"
+
 #include <QDebug>
-#include <QHBoxLayout>
+#include <QGridLayout>
 #include <QLabel>
 #include <QString>
 #include <QVBoxLayout>
@@ -26,12 +28,10 @@ class VectorWidget : public QWidget,
     layout->setSpacing(4);
     layout->addWidget(new QLabel(QString("std::vector<") + Type::getName() + ">(" +
                                  QString::number(_elements->size()) + ")"));
-    for (auto &element : *_elements) {
-      auto *horizontalLayout = new QHBoxLayout();
-      horizontalLayout->addWidget(WidgetTools::createIndexLabel(element.getIndex()));
-      horizontalLayout->addWidget(TypeWidget::createWidget(&element, this));
-      layout->addLayout(horizontalLayout);
-    }
+
+    layout->addWidget(
+        VectorFullContentsWidgetFactory::createWidget<Type, TypeWidget>(elements, this));
+
     setLayout(layout);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
   }

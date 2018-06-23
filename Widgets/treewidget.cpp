@@ -2,7 +2,7 @@
 
 #include <QVBoxLayout>
 #include <algorithm>
-#include "expandablewidget.h"
+#include "directexpandablewidget.h"
 #include "layoutfactory.h"
 
 TreeWidget::TreeWidget(QWidget *parent) : QWidget(parent) {

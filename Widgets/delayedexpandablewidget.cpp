@@ -1,22 +1,17 @@
 #include "delayedexpandablewidget.h"
 
+#include "layoutfactory.h"
+
+#include <QPushButton>
+#include <QVBoxLayout>
+
+#include <cassert>
 #include <functional>
 
 DelayedExpandableWidget::DelayedExpandableWidget(WidgetBuilder widgetBuilder,
                                                  const QString &name,
                                                  QWidget *parent)
-    : QWidget(parent),
-      _qPushButton(new QPushButton(QString("+ ") + name, this)),
-      _widgetBuilder(std::move(widgetBuilder)) {
-  _qPushButton->setFixedHeight(21);
-  _qPushButton->setFocusPolicy(Qt::NoFocus);
-  _qPushButton->setContentsMargins(0, 0, 0, 0);
-  auto *layout = LayoutFactory::createLayout<QVBoxLayout>(this);
-  layout->setContentsMargins(15, 0, 0, 0);
-  layout->addWidget(_qPushButton);
-  setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-  layout->setAlignment(Qt::AlignTop);
-  setLayout(layout);
+    : ExpandableWidget(name, parent), _widgetBuilder(std::move(widgetBuilder)) {
   QObject::connect(_qPushButton, SIGNAL(released()), SLOT(toggleWidgetVisibility()));
 }
 
@@ -30,7 +25,7 @@ void DelayedExpandableWidget::toggleWidgetVisibility() {
     _widget = nullptr;
   }
   auto text = _qPushButton->text();
-  text.replace(0, 1, wasVisible ? "-" : "+");
+  text.replace(0, 2, wasVisible ? " +" : " -");
   _qPushButton->setText(text);
 }
 

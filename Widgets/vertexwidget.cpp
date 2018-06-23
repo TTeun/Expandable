@@ -14,10 +14,10 @@ VertexWidget::VertexWidget(Vertex *vertex, QWidget *parent) : GridWidget(parent)
   assert(_vertex != nullptr);
   _layout->addWidget(new QLabel("x:"), 0, 0, 1, 1);
   _layout->addWidget(
-      WidgetTools::createDoubleSpinBox(vertex->getX(), this, SLOT(setX(double))), 0, 1, 1, 1);
+      WidgetTools::createDoubleSpinBox(this, SLOT(setX(double)), vertex->getX()), 0, 1, 1, 1);
   _layout->addWidget(new QLabel("y:"), 0, 2, 1, 1);
   _layout->addWidget(
-      WidgetTools::createDoubleSpinBox(vertex->getY(), this, SLOT(setY(double))), 0, 3, 1, 1);
+      WidgetTools::createDoubleSpinBox(this, SLOT(setY(double)), vertex->getY()), 0, 3, 1, 1);
   qDebug() << "Create VertexWidget";
 }
 

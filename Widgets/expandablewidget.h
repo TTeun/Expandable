@@ -1,18 +1,26 @@
 #ifndef EXPANDABLEWIDGET_H
 #define EXPANDABLEWIDGET_H
 
-#include <QPushButton>
 #include <QWidget>
+
+class QPushButton;
+class QString;
 
 class ExpandableWidget : public QWidget {
   Q_OBJECT
  public:
-  ExpandableWidget(QWidget *widget, const QString &name, QWidget *parent);
+  explicit ExpandableWidget(const QString &name, QWidget *parent);
 
-  QWidget *getWidget();
+  QWidget *getWidget() {
+    return _widget;
+  }
+
+  const QWidget *getWidget() const {
+    return _widget;
+  }
 
  protected slots:
-  virtual void toggleWidgetVisibility();
+  virtual void toggleWidgetVisibility() = 0;
 
  protected:
   QPushButton *_qPushButton;
