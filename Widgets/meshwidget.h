@@ -15,6 +15,9 @@ class MeshWidget : public TreeWidget, public InspectionWidget<Mesh, MeshWidget> 
  public:
   ~MeshWidget();
 
+ signals:
+  void wasUpdated();
+
  private:
   Mesh *_mesh = nullptr;
 };

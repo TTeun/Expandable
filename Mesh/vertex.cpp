@@ -14,12 +14,22 @@ size_t Vertex::getIndex() const {
   return _index;
 }
 
+double Vertex::getZ() const
+{
+    return _z;
+}
+
+void Vertex::setZ(double z)
+{
+    _z = z;
+}
+
 double Vertex::getX() const {
-  return _x;
+    return _x;
 }
 
 void Vertex::setX(double x) {
-  _x = x;
+    _x = x;
 }
 
 double Vertex::getY() const {

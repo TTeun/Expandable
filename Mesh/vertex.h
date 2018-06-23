@@ -18,11 +18,15 @@ class Vertex {
   void setX(double x);
   double getY() const;
   void setY(double y);
+  double getZ() const;
+  void setZ(double z);
+
   size_t getIndex() const;
 
  private:
   double _x = 0.;
   double _y = 0.;
+  double _z = 0.05;
   size_t _index = 0u;
 };
 

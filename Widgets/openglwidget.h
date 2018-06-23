@@ -8,8 +8,6 @@
 #include <memory>
 #include <vector>
 
-QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
-
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions {
   Q_OBJECT
 
@@ -19,6 +17,7 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions {
 
   QSize minimumSizeHint() const override;
   QSize sizeHint() const override;
+  void addRenderObject(RenderObject *renderObject);
 
  public slots:
   void cleanup();
@@ -32,7 +31,6 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions {
 
  private:
   std::vector<std::unique_ptr<RenderObject>> _renderObjects;
-  QOpenGLShaderProgram *m_program;
 };
 
 #endif

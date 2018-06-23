@@ -1,11 +1,10 @@
 #include "openglwidget.h"
-#include <math.h>
+
 #include <QCoreApplication>
+#include <QDebug>
 #include <QMouseEvent>
-#include <QOpenGLShaderProgram>
 
 OpenGlWidget::OpenGlWidget(QWidget *parent) : QOpenGLWidget(parent) {
-  _renderObjects.push_back(std::make_unique<RenderObject>());
 }
 
 OpenGlWidget::~OpenGlWidget() {
@@ -20,43 +19,20 @@ QSize OpenGlWidget::sizeHint() const {
   return QSize(400, 400);
 }
 
+void OpenGlWidget::addRenderObject(RenderObject *renderObject) {
+  _renderObjects.push_back(std::unique_ptr<RenderObject>(renderObject));
+}
+
 void OpenGlWidget::cleanup() {
-  if (m_program == nullptr)
-    return;
   makeCurrent();
-  delete m_program;
-  m_program = nullptr;
   doneCurrent();
 }
 
-static const char *vertexShaderSource =
-    "attribute vec3 vertex;\n"
-    "attribute vec3 normal;\n"
-    "varying vec3 vert;\n"
-    "void main() {\n"
-    "   vert = vertex.xyz;\n"
-    "   gl_Position =  vec4(vertex,1.0);\n"
-    "}\n";
-
-static const char *fragmentShaderSource =
-    "varying highp vec3 vert;\n"
-    "varying highp vec3 vertNormal;\n"
-    "void main() {\n"
-    "   gl_FragColor = vec4(1.0,1.0,1.0, 1.0);\n"
-    "}\n";
-
 void OpenGlWidget::initializeGL() {
+  qDebug() << "InitializeGl";
   initializeOpenGLFunctions();
-  glClearColor(0, 0, 0, 1);
 
-  m_program = new QOpenGLShaderProgram;
-  m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
-  m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
-  m_program->bindAttributeLocation("vertex", 0);
-  m_program->bindAttributeLocation("normal", 1);
-  m_program->link();
-
-  _renderObjects[0]->initialize(QOpenGLContext::currentContext()->functions());
+  glClearColor(1, 1, 1, 1);
 }
 
 void OpenGlWidget::paintGL() {
@@ -64,12 +40,9 @@ void OpenGlWidget::paintGL() {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
 
-  QOpenGLVertexArrayObject::Binder vaoBinder(&_renderObjects[0]->_vao);
-  m_program->bind();
-  glPointSize(20);
-  glDrawArrays(GL_LINE_STRIP, 0, _renderObjects[0]->_data.size() / 6);
-  glDrawArrays(GL_POINTS, 0, _renderObjects[0]->_data.size() / 6);
-  m_program->release();
+  for (size_t i = 0; i != _renderObjects.size(); ++i) {
+    _renderObjects[i]->render(QOpenGLContext::currentContext()->functions());
+  }
 }
 
 void OpenGlWidget::resizeGL(int w, int h) {

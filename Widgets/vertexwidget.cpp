@@ -6,18 +6,30 @@
 #include <cassert>
 #include <functional>
 #include "../Mesh/vertex.h"
+#include "updatedispatcher.h"
 #include "widgettools.h"
 
 #include <QDebug>
 
-VertexWidget::VertexWidget(Vertex *vertex, QWidget *parent) : GridWidget(parent), _vertex(vertex) {
+VertexWidget::VertexWidget(Vertex *vertex, QWidget *parent, Mesh *parentObject)
+    : GridWidget(parent), _vertex(vertex), _parentObject(parentObject) {
   assert(_vertex != nullptr);
-  _layout->addWidget(new QLabel("x:"), 0, 0, 1, 1);
-  _layout->addWidget(
-      WidgetTools::createDoubleSpinBox(this, SLOT(setX(double)), vertex->getX()), 0, 1, 1, 1);
-  _layout->addWidget(new QLabel("y:"), 0, 2, 1, 1);
-  _layout->addWidget(
-      WidgetTools::createDoubleSpinBox(this, SLOT(setY(double)), vertex->getY()), 0, 3, 1, 1);
+  {
+    auto *xDoubleSpinBox = WidgetTools::createDoubleSpinBox(this, vertex->getX());
+    QObject::connect(xDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(setX(double)));
+    _layout->addWidget(xDoubleSpinBox, 0, 0, 1, 1);
+  }
+  {
+    auto *yDoubleSpinBox = WidgetTools::createDoubleSpinBox(this, vertex->getY());
+    QObject::connect(yDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(setY(double)));
+    _layout->addWidget(yDoubleSpinBox, 0, 1, 1, 1);
+  }
+  {
+    auto *zDoubleSpinBox = WidgetTools::createDoubleSpinBox(this, vertex->getZ());
+    QObject::connect(zDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(setZ(double)));
+    _layout->addWidget(zDoubleSpinBox, 0, 2, 1, 1);
+  }
+  QObject::connect(this, &VertexWidget::wasUpdated, UpdateDispatcher::receiveUpdate);
   qDebug() << "Create VertexWidget";
 }
 
@@ -27,8 +39,15 @@ VertexWidget::~VertexWidget() {
 
 void VertexWidget::setX(const double x) {
   _vertex->setX(x);
+  emit wasUpdated(_parentObject);
 }
 
 void VertexWidget::setY(const double y) {
   _vertex->setY(y);
+  emit wasUpdated(_parentObject);
+}
+
+void VertexWidget::setZ(const double z) {
+  _vertex->setZ(z);
+  emit wasUpdated(_parentObject);
 }

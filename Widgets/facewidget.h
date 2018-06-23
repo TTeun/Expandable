@@ -1,22 +1,27 @@
 #ifndef FACEWIDGET_H
 #define FACEWIDGET_H
 
-//#include <functional>
-//#include "gridwidget.h"
-//#include "inspectionwidget.h"
+#include <functional>
+#include "gridwidget.h"
+#include "inspectionwidgetwithparent.h"
 
-// class Face;
+class Face;
+class Mesh;
 
-// class FaceWidget : public GridWidget, public InspectionWidget<Face, FaceWidget> {
-//  Q_OBJECT
-// public:
-//  FaceWidget(Face *face, QWidget *parent);
+class FaceWidget : public GridWidget, public InspectionWidgetWithParent<Face, FaceWidget, Mesh> {
+  Q_OBJECT
+ public:
+  FaceWidget(Face *face, QWidget *parent, Mesh *parentObject);
 
-// public:
-//  ~FaceWidget();
+ public:
+  ~FaceWidget();
 
-// private:
-//  Face *_face;
-//};
+ signals:
+  void wasUpdated(const Mesh *ptr);
+
+ private:
+  Face *_face;
+  Mesh *_parentObject = nullptr;
+};
 
 #endif  // FACEWIDGET_H

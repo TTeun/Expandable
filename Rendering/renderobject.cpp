@@ -1,53 +1,93 @@
 #include "renderobject.h"
 
 #include <QDebug>
+#include <QOpenGLShaderProgram>
+
+#include <QString>
+
+QString RenderObject::getNameOfRenderMode(RenderObject::Render_Mode renderMode) {
+  switch (renderMode) {
+    case RenderObject::Render_Mode::Points:
+      return QString("Points");
+    case RenderObject::Render_Mode::Lines:
+      return QString("Lines");
+      break;
+    default:
+      break;
+  }
+}
 
 RenderObject::RenderObject() {
 }
 
-void RenderObject::initialize(QOpenGLFunctions *f) {
+void RenderObject::render(QOpenGLFunctions *f) {
+  if (not _isInitialized) {
+    initialize(f);
+  }
+  update();
+  QOpenGLVertexArrayObject::Binder vaoBinder(&_vao);
+  for (size_t i = 1u; i != Render_Mode::End; i <<= 1u) {
+    if (_renderMode & i) {
+      render(static_cast<RenderObject::Render_Mode>(i));
+    }
+  }
+}
+
+void RenderObject::needsUpdate(bool needsUpdate) {
+  _needsUpdate = needsUpdate;
+}
+
+void RenderObject::initializeBase(QOpenGLFunctions *f) {
   _vao.create();
   QOpenGLVertexArrayObject::Binder vaoBinder(&_vao);
   Q_UNUSED(vaoBinder);
-  _vbo.create();
-  update();
+  _vertexPositionBufferObject.create();
+  _vertexPositionBufferObject.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  _vertexNormalBufferObject.create();
+  _vertexNormalBufferObject.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  _needsUpdate = true;
   {
-    _vbo.bind();
+    _vertexPositionBufferObject.bind();
     f->glEnableVertexAttribArray(0);
+    f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+    _vertexPositionBufferObject.release();
+
+    _vertexNormalBufferObject.bind();
     f->glEnableVertexAttribArray(1);
-    f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
-    f->glVertexAttribPointer(1,
-                             3,
-                             GL_FLOAT,
-                             GL_FALSE,
-                             6 * sizeof(GLfloat),
-                             reinterpret_cast<void *>(3 * sizeof(GLfloat)));
-    _vbo.release();
+    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+    _vertexNormalBufferObject.release();
   }
+  _isInitialized = true;
+}
+
+size_t RenderObject::objectCount() {
+  return _positionData.size() / 3;
+}
+
+void RenderObject::initialize(QOpenGLFunctions *f) {
+  initializeBase(f);
 }
 
 void RenderObject::update() {
+  if (!_needsUpdate) {
+    return;
+  }
   fillData();
-  _vbo.bind();
-  _vbo.allocate(_data.constData(), _data.size() * sizeof(GLfloat));
-  _vbo.release();
+  _vertexPositionBufferObject.bind();
+  _vertexPositionBufferObject.allocate(_positionData.constData(),
+                                       _positionData.size() * sizeof(GLfloat));
+  _vertexPositionBufferObject.release();
+  _vertexNormalBufferObject.bind();
+  _vertexNormalBufferObject.allocate(_normalData.constData(), _normalData.size() * sizeof(GLfloat));
+  _vertexNormalBufferObject.release();
+  _needsUpdate = false;
 }
 
 void RenderObject::fillData() {
-  _data.clear();
-  _data.squeeze();
-  for (auto &vertex : _mesh.getVertices()) {
-    _data.append(vertex.getX() + 0.5);
-    _data.append(vertex.getY());
-    _data.append(0.05);
-
-    _data.append(0.);
-    _data.append(0.);
-    _data.append(-1);
-  }
 }
 
 void RenderObject::cleanUp() {
-  _vbo.destroy();
+  _vertexPositionBufferObject.destroy();
+  _vertexNormalBufferObject.destroy();
   _vao.destroy();
 }

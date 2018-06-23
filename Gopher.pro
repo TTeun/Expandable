@@ -44,7 +44,12 @@ SOURCES += \
     Widgets/expandablewidget.cpp \
     Widgets/openglwidget.cpp \
     Rendering/renderobject.cpp \
-    Rendering/meshrenderobject.cpp
+    Rendering/meshrenderobject.cpp \
+    Widgets/updatedispatcher.cpp \
+    Widgets/viewwidget.cpp \
+    Shaders/pointshader.cpp \
+    Shaders/shaderhandler.cpp \
+    Widgets/meshviewwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -69,6 +74,12 @@ HEADERS += \
     Widgets/vectorfullcontentswidgetfactory.h \
     Widgets/openglwidget.h \
     Rendering/renderobject.h \
-    Rendering/meshrenderobject.h
+    Rendering/meshrenderobject.h \
+    Widgets/inspectionwidgetwithparent.h \
+    Widgets/updatedispatcher.h \
+    Widgets/viewwidget.h \
+    Shaders/pointshader.h \
+    Shaders/shaderhandler.h \
+    Widgets/meshviewwidget.h
 
 CONFIG += c++14 -Wall

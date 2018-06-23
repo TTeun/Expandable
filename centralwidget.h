@@ -3,9 +3,15 @@
 
 #include <QWidget>
 
+#include <memory>
+
 #include "Mesh/mesh.h"
-#include "Widgets/openglwidget.h"
-#include "Widgets/treewidget.h"
+
+class TreeWidget;
+class OpenGlWidget;
+class QGroupBox;
+class QLayout;
+class ViewWidget;
 
 class CentralWidget : public QWidget {
   Q_OBJECT
@@ -16,8 +22,14 @@ class CentralWidget : public QWidget {
   ~CentralWidget();
 
  private:
-  TreeWidget *_treeWidget;
-  OpenGlWidget *_openGlWidget;
+  QGroupBox *createGroupBox();
+  QLayout *createLayout();
+  void buildTreeWidget();
+  void buildOpenGlWidget();
+
+  std::unique_ptr<TreeWidget> _treeWidget;
+  std::unique_ptr<OpenGlWidget> _openGlWidget;
+  std::unique_ptr<ViewWidget> _viewWidget;
   Mesh _mesh;
 };
 

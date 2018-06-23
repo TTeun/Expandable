@@ -10,21 +10,39 @@
 
 class RenderObject {
  public:
+  enum Render_Mode : size_t { Points = 1u, Lines = 2u, End = 4u };
+
+  static QString getNameOfRenderMode(Render_Mode renderMode);
+
   RenderObject();
 
   virtual ~RenderObject() {
   }
+  bool isInitialized() {
+    return _isInitialized;
+  }
 
-  void initialize(QOpenGLFunctions *f);
-  void update();
+  virtual void render(QOpenGLFunctions *f);
+  virtual size_t objectCount();
+  virtual void initialize(QOpenGLFunctions *f);
+  virtual void update();
   virtual void fillData();
-  void cleanUp();
+  virtual void cleanUp();
 
- public:
+  void needsUpdate(bool needsUpdate);
+
+ protected:
+  void initializeBase(QOpenGLFunctions *f);
+  virtual void render(Render_Mode renderMode) = 0;
+
   QOpenGLVertexArrayObject _vao;
-  QOpenGLBuffer _vbo;
-  QVector<GLfloat> _data;
-  Mesh _mesh;
+  QOpenGLBuffer _vertexPositionBufferObject;
+  QOpenGLBuffer _vertexNormalBufferObject;
+  QVector<GLfloat> _positionData;
+  QVector<GLfloat> _normalData;
+  size_t _renderMode = Render_Mode::Points | Render_Mode::Lines;
+  bool _needsUpdate;
+  bool _isInitialized = false;
 };
 
 #endif  // RENDEROBJECT_H

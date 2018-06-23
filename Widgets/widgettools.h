@@ -16,12 +16,11 @@ class WidgetTools {
   WidgetTools() = delete;
 
   static QLabel *createIndexLabel(const size_t index);
-  static QDoubleSpinBox *createDoubleSpinBox(
-      QWidget *parent,
-      const char *functionString,
-      const double initialValue,
-      const double minimumValue = std::numeric_limits<double>::min(),
-      const double maximumValue = std::numeric_limits<double>::max());
+  static QDoubleSpinBox *createDoubleSpinBox(QWidget *parent,
+                                             const double initialValue,
+                                             const double minimumValue = -100.,
+                                             const double maximumValue = 100.,
+                                             const double increment = 0.05);
   static QSpinBox *createConstantSpinBox(QWidget *parent, const size_t initialValue);
   static QGridLayout *createInspectionWidgetLayout(QWidget *parent);
   static QLineEdit *createPointerLineEdit(QWidget *parent, void *ptr);

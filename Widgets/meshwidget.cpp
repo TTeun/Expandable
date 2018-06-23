@@ -12,18 +12,20 @@
 #include "vertexwidget.h"
 
 MeshWidget::MeshWidget(Mesh *mesh, QWidget *parent) : TreeWidget(parent), _mesh(mesh) {
+  addWidget(
+      new DelayedExpandableWidget(VectorWidget<Vertex, VertexWidget, Mesh>::createWidgetBuilder(
+                                      &_mesh->getVertices(), this, mesh),
+                                  "Vertices",
+                                  this));
+  addWidget(
+      new DelayedExpandableWidget(VectorWidget<HalfEdge, HalfEdgeWidget, Mesh>::createWidgetBuilder(
+                                      &_mesh->getHalfEdges(), this, mesh),
+                                  "HalfEdges",
+                                  this));
   addWidget(new DelayedExpandableWidget(
-      VectorWidget<Vertex, VertexWidget>::createWidgetBuilder(&_mesh->getVertices(), this),
-      "Vertices",
+      VectorWidget<Face, FaceWidget, Mesh>::createWidgetBuilder(&_mesh->getFaces(), this, mesh),
+      "Faces",
       this));
-  addWidget(new DelayedExpandableWidget(
-      VectorWidget<HalfEdge, HalfEdgeWidget>::createWidgetBuilder(&_mesh->getHalfEdges(), this),
-      "HalfEdges",
-      this));
-  //  addWidget(new DelayedExpandableWidget(
-  //      VectorWidget<Vertex, VertexWidget>::createWidgetBuilder(&_mesh->getVertices(), this),
-  //      "Vertices",
-  //      this));
   qDebug() << "Create MeshWidget";
 }
 

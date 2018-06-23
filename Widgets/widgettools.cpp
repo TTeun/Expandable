@@ -15,16 +15,16 @@ QLabel *WidgetTools::createIndexLabel(const size_t index) {
 }
 
 QDoubleSpinBox *WidgetTools::createDoubleSpinBox(QWidget *parent,
-                                                 const char *functionString,
                                                  const double initialValue,
                                                  const double minimumValue,
-                                                 const double maximumValue) {
+                                                 const double maximumValue,
+                                                 const double increment) {
   auto *doubleSpinBox = new QDoubleSpinBox(parent);
   doubleSpinBox->setValue(initialValue);
   doubleSpinBox->setMinimum(minimumValue);
   doubleSpinBox->setMaximum(maximumValue);
-  doubleSpinBox->setSingleStep(0.1);
-  QObject::connect(doubleSpinBox, SIGNAL(valueChanged(double)), parent, functionString);
+  doubleSpinBox->setSingleStep(increment);
+  doubleSpinBox->setContentsMargins(0, 0, 0, 0);
   return doubleSpinBox;
 }
 
