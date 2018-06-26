@@ -4,7 +4,8 @@
 
 #include <QOpenGLShaderProgram>
 
-MeshRenderObject::MeshRenderObject(const Mesh *mesh) : _mesh(mesh) {
+MeshRenderObject::MeshRenderObject(const Mesh *mesh, size_t quadrant)
+    : RenderObject(quadrant), _mesh(mesh) {
 }
 
 size_t MeshRenderObject::objectCount() {
@@ -14,25 +15,26 @@ size_t MeshRenderObject::objectCount() {
 void MeshRenderObject::fillData() {
   _positionData.clear();
   _positionData.squeeze();
-  for (auto &vertex : _mesh->getVertices()) {
-    _positionData.append(vertex.getX() + 0.5);
-    _positionData.append(vertex.getY());
-    _positionData.append(vertex.getZ());
-  }
-
   _normalData.clear();
   _normalData.squeeze();
-  for (auto &vertex : _mesh->getVertices()) {
-    Q_UNUSED(vertex)
-    _normalData.append(0);
-    _normalData.append(0);
-    _normalData.append(1);
+  for (const auto &face : _mesh->getFaces()) {
+    auto *side = face.getSide();
+    for (size_t i = 0; i != face.getVal() + 1u; ++i) {
+      const auto *vertex = side->getTarget();
+      _positionData.append(vertex->getX());
+      _positionData.append(vertex->getY());
+      _positionData.append(vertex->getZ());
+
+      _normalData.append(0);
+      _normalData.append(0);
+      _normalData.append(1);
+      side = side->getNext();
+    }
   }
 }
 
 void MeshRenderObject::initialize(QOpenGLFunctions *f) {
   initializeBase(f);
-  _pointShader.reset(new PointShader);
 }
 
 void MeshRenderObject::render(QOpenGLFunctions *f) {

@@ -14,8 +14,14 @@ class PointShader {
   void bind();
   void release();
 
+  void setQuadrant(size_t quadrant);
+
  private:
   std::unique_ptr<QOpenGLShaderProgram> _shader;
+
+  int _dxLocation;
+  int _dyLocation;
+  int _scaleLocation;
 };
 
 #endif  // POINTSHADER_H

@@ -33,7 +33,7 @@ void MeshViewWidget::toggleRenderMode(RenderObject::Render_Mode renderMode, bool
 
 void MeshViewWidget::addCheckBox(RenderObject::Render_Mode renderMode, size_t pos) {
   auto *checkBox = new QCheckBox(RenderObject::getNameOfRenderMode(renderMode));
-  checkBox->setChecked(true);
+  checkBox->setChecked(_meshRenderObject->getRenderMode() & renderMode);
   connect(checkBox, &QCheckBox::toggled, [this, renderMode](bool value) {
     this->toggleRenderMode(renderMode, value);
   });

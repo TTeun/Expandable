@@ -3,11 +3,9 @@
 
 #include "renderobject.h"
 
-class PointShader;
-
 class MeshRenderObject : public RenderObject {
  public:
-  MeshRenderObject(const Mesh *mesh);
+  MeshRenderObject(const Mesh *mesh, size_t quadrant = 0);
 
   size_t objectCount() override;
   void fillData() override;
@@ -28,9 +26,7 @@ class MeshRenderObject : public RenderObject {
 
   const Mesh *_mesh;
 
-  std::unique_ptr<PointShader> _pointShader;
-
-  size_t _renderMode = Render_Mode::Points | Render_Mode::Lines;
+  size_t _renderMode = Render_Mode::Lines;
   static const size_t _availableRenderModes = Render_Mode::Points | Render_Mode::Lines;
 };
 

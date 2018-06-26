@@ -17,3 +17,7 @@ size_t Face::getVal() const {
 size_t Face::getIndex() const {
   return _index;
 }
+
+const HalfEdge *Face::getSide() const {
+  return _side;
+}

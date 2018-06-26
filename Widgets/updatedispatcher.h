@@ -11,17 +11,19 @@ class OpenGlWidget;
 class UpdateDispatcher : public QObject {
   Q_OBJECT
 
+ public:
+  enum Update_Type { Redraw };
+
+ private:
   UpdateDispatcher() = delete;
 
  public:
-  static void addConnection(const Mesh *mesh, RenderObject *renderObject);
   static void setOpenGlWidget(OpenGlWidget *openGlWidget);
 
  public slots:
-  static void receiveUpdate(const Mesh *ptr);
+  static void receiveUpdate(Update_Type type);
 
  private:
-  static std::unordered_map<const Mesh *, RenderObject *> _objectToRenderObjectMap;
   static OpenGlWidget *_openGlWidget;
 };
 

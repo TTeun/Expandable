@@ -1,6 +1,8 @@
 #include "centralwidget.h"
 
 #include "Mesh/vertex.h"
+#include "Rendering/bsplinerenderer.h"
+#include "Rendering/meshinterpolator.h"
 #include "Rendering/meshrenderobject.h"
 #include "Widgets/delayedexpandablewidget.h"
 #include "Widgets/directexpandablewidget.h"
@@ -17,14 +19,20 @@
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QPalette>
+#include <QSlider>
 #include <QSpinBox>
 #include <QVBoxLayout>
 
 CentralWidget::CentralWidget(QWidget* parent)
     : QWidget(parent),
-      _treeWidget(new TreeWidget(this)),
-      _openGlWidget(new OpenGlWidget(this)),
-      _viewWidget(new ViewWidget(_openGlWidget.get(), this)) {
+      _treeWidget(std::make_unique<TreeWidget>(this)),
+      _openGlWidget(std::make_unique<OpenGlWidget>(this)),
+      _viewWidget(std::make_unique<ViewWidget>(_openGlWidget.get(), this)),
+      _meshRenderObject(new MeshRenderObject(&_mesh, 1)),
+      _bSplineRenderer(new BSplineRenderer(&_mesh, 1)),
+      _meshRenderObject2(new MeshRenderObject(&_mesh2, 2)),
+      _bSplineRenderer2(new BSplineRenderer(&_mesh2, 2)),
+      _meshInterpolator(new MeshInterpolator(&_mesh, &_mesh2, 3)) {
   setObjectName("centralWidget");
   auto* layout = createLayout();
   layout->addWidget(createGroupBox());
@@ -57,6 +65,13 @@ QGroupBox* CentralWidget::createGroupBox() {
   leftLayout->setContentsMargins(5, 10, 5, 10);
   buildTreeWidget();
   leftLayout->addWidget(_treeWidget.get());
+
+  auto slider = new QSlider;
+  connect(slider, &QSlider::valueChanged, [this](int value) {
+    MeshInterpolator::_alpha = (value / 50.);
+    this->_openGlWidget->update();
+  });
+  leftLayout->addWidget(slider);
   return groupBox;
 }
 
@@ -70,10 +85,28 @@ QLayout* CentralWidget::createLayout() {
 
 void CentralWidget::buildTreeWidget() {
   _treeWidget->addWidget(new DirectExpandableWidget(
-      new DelayedExpandableWidget(MeshWidget::createWidgetBuilder(&_mesh, this), "Mesh", this),
+      new DirectExpandableWidget(
+          {MeshWidget::createWidget(&_mesh, this, _meshRenderObject),
+           new DirectExpandableWidget(
+               new MeshViewWidget(_meshRenderObject, _openGlWidget.get(), _viewWidget.get()),
+               "Mesh view",
+               this)},
+          "Mesh",
+          this),
       "Model",
       this));
-  _treeWidget->addWidget(new DirectExpandableWidget(_viewWidget.get(), "View", this));
+
+  _treeWidget->addWidget(new DirectExpandableWidget(
+      new DirectExpandableWidget(
+          {MeshWidget::createWidget(&_mesh2, this, _meshRenderObject2),
+           new DirectExpandableWidget(
+               new MeshViewWidget(_meshRenderObject2, _openGlWidget.get(), _viewWidget.get()),
+               "Mesh view",
+               this)},
+          "Mesh",
+          this),
+      "Model",
+      this));
   _treeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   for (auto& widgetIt : _treeWidget->widgets()) {
     widgetIt->layout()->setContentsMargins(0, 0, 0, 0);
@@ -81,12 +114,9 @@ void CentralWidget::buildTreeWidget() {
 }
 
 void CentralWidget::buildOpenGlWidget() {
-  auto* meshRenderObject = new MeshRenderObject(&_mesh);
-
-  _viewWidget->layout()->addWidget(new DirectExpandableWidget(
-      new MeshViewWidget(meshRenderObject, _openGlWidget.get(), _viewWidget.get()),
-      "Mesh view",
-      this));
-  UpdateDispatcher::addConnection(&_mesh, meshRenderObject);
-  _openGlWidget->addRenderObject(meshRenderObject);
+  _openGlWidget->addRenderObject(_meshRenderObject);
+  _openGlWidget->addRenderObject(_bSplineRenderer);
+  _openGlWidget->addRenderObject(_meshRenderObject2);
+  _openGlWidget->addRenderObject(_bSplineRenderer2);
+  _openGlWidget->addRenderObject(_meshInterpolator);
 }

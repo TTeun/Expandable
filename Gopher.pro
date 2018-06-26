@@ -49,7 +49,9 @@ SOURCES += \
     Widgets/viewwidget.cpp \
     Shaders/pointshader.cpp \
     Shaders/shaderhandler.cpp \
-    Widgets/meshviewwidget.cpp
+    Widgets/meshviewwidget.cpp \
+    Rendering/bsplinerenderer.cpp \
+    Rendering/meshinterpolator.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -80,6 +82,8 @@ HEADERS += \
     Widgets/viewwidget.h \
     Shaders/pointshader.h \
     Shaders/shaderhandler.h \
-    Widgets/meshviewwidget.h
+    Widgets/meshviewwidget.h \
+    Rendering/bsplinerenderer.h \
+    Rendering/meshinterpolator.h
 
 CONFIG += c++14 -Wall

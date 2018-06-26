@@ -10,17 +10,17 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <vector>
-#include "inspectionwidgetwithparent.h"
+#include "inspectionwidget.h"
 #include "widgettools.h"
 
-template <typename Type, typename TypeWidget, typename ParentObject>
+class RenderObject;
+
+template <typename Type, typename TypeWidget>
 class VectorWidget : public QWidget,
-                     public InspectionWidgetWithParent<std::vector<Type>,
-                                                       VectorWidget<Type, TypeWidget, ParentObject>,
-                                                       ParentObject> {
+                     public InspectionWidget<std::vector<Type>, VectorWidget<Type, TypeWidget>> {
  public:
-  VectorWidget(std::vector<Type> *elements, QWidget *parent, ParentObject *parentObject)
-      : QWidget(parent), _elements(elements), _parentObject(parentObject) {
+  VectorWidget(std::vector<Type> *elements, QWidget *parent, RenderObject *renderObject)
+      : QWidget(parent), _elements(elements), _renderObject(renderObject) {
     qDebug() << "Create vectorWidget";
     setObjectName("vectorWidget");
     auto *layout = new QVBoxLayout(this);
@@ -31,8 +31,8 @@ class VectorWidget : public QWidget,
     layout->addWidget(new QLabel(QString("std::vector<") + Type::getName() + ">(" +
                                  QString::number(_elements->size()) + ")"));
 
-    layout->addWidget(VectorFullContentsWidgetFactory::createWidget<Type, TypeWidget, ParentObject>(
-        elements, this, _parentObject));
+    layout->addWidget(VectorFullContentsWidgetFactory::createWidget<Type, TypeWidget>(
+        elements, this, _renderObject));
 
     setLayout(layout);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -44,7 +44,7 @@ class VectorWidget : public QWidget,
 
  private:
   std::vector<Type> *_elements;
-  ParentObject *_parentObject;
+  RenderObject *_renderObject;
 };
 
 #endif  // VECTORWIDGET_H

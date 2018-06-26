@@ -2,9 +2,11 @@
 #define RENDEROBJECT_H
 
 #include "../Mesh/mesh.h"
+#include "../Shaders/pointshader.h"
 
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
 #include <QVector>
 
@@ -14,13 +16,15 @@ class RenderObject {
 
   static QString getNameOfRenderMode(Render_Mode renderMode);
 
-  RenderObject();
+  RenderObject(size_t quadrant = 0);
 
   virtual ~RenderObject() {
   }
   bool isInitialized() {
     return _isInitialized;
   }
+
+  void setQuadrant(size_t quadrant);
 
   virtual void render(QOpenGLFunctions *f);
   virtual size_t objectCount();
@@ -31,13 +35,22 @@ class RenderObject {
 
   void needsUpdate(bool needsUpdate);
 
+  std::unique_ptr<PointShader> _pointShader;
+
  protected:
+  size_t _quadrant = 0;
+
+  size_t _dx = 0.;
+  size_t _dy = 0.;
+
+  QVector<GLushort> _indices;
+
   void initializeBase(QOpenGLFunctions *f);
   virtual void render(Render_Mode renderMode) = 0;
-
   QOpenGLVertexArrayObject _vao;
   QOpenGLBuffer _vertexPositionBufferObject;
   QOpenGLBuffer _vertexNormalBufferObject;
+  QOpenGLBuffer _indexBufferObject;
   QVector<GLfloat> _positionData;
   QVector<GLfloat> _normalData;
   size_t _renderMode = Render_Mode::Points | Render_Mode::Lines;

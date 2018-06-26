@@ -1,8 +1,6 @@
 #include "renderobject.h"
 
 #include <QDebug>
-#include <QOpenGLShaderProgram>
-
 #include <QString>
 
 QString RenderObject::getNameOfRenderMode(RenderObject::Render_Mode renderMode) {
@@ -17,7 +15,12 @@ QString RenderObject::getNameOfRenderMode(RenderObject::Render_Mode renderMode) 
   }
 }
 
-RenderObject::RenderObject() {
+RenderObject::RenderObject(size_t quadrant)
+    : _quadrant(quadrant), _indexBufferObject(QOpenGLBuffer::IndexBuffer) {
+}
+
+void RenderObject::setQuadrant(size_t quadrant) {
+  _pointShader->setQuadrant(quadrant);
 }
 
 void RenderObject::render(QOpenGLFunctions *f) {
@@ -45,6 +48,8 @@ void RenderObject::initializeBase(QOpenGLFunctions *f) {
   _vertexPositionBufferObject.setUsagePattern(QOpenGLBuffer::StaticDraw);
   _vertexNormalBufferObject.create();
   _vertexNormalBufferObject.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  _indexBufferObject.create();
+  _indexBufferObject.setUsagePattern(QOpenGLBuffer::StaticDraw);
   _needsUpdate = true;
   {
     _vertexPositionBufferObject.bind();
@@ -58,6 +63,8 @@ void RenderObject::initializeBase(QOpenGLFunctions *f) {
     _vertexNormalBufferObject.release();
   }
   _isInitialized = true;
+  _pointShader.reset(new PointShader);
+  _pointShader->setQuadrant(_quadrant);
 }
 
 size_t RenderObject::objectCount() {

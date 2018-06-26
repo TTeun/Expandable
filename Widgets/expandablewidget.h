@@ -3,6 +3,9 @@
 
 #include <QWidget>
 
+#include <cassert>
+#include <vector>
+
 class QPushButton;
 class QString;
 
@@ -11,12 +14,14 @@ class ExpandableWidget : public QWidget {
  public:
   explicit ExpandableWidget(const QString &name, QWidget *parent);
 
-  QWidget *getWidget() {
-    return _widget;
+  QWidget *getWidget(size_t index) {
+    assert(index < _widgets.size());
+    return _widgets[index];
   }
 
-  const QWidget *getWidget() const {
-    return _widget;
+  const QWidget *getWidget(size_t index) const {
+    assert(index < _widgets.size());
+    return _widgets[index];
   }
 
  protected slots:
@@ -24,7 +29,7 @@ class ExpandableWidget : public QWidget {
 
  protected:
   QPushButton *_qPushButton;
-  QWidget *_widget = nullptr;
+  std::vector<QWidget *> _widgets;
 };
 
 #endif  // EXPANDABLEWIDGET_H

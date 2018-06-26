@@ -10,6 +10,8 @@ class DirectExpandableWidget : public ExpandableWidget {
  public:
   DirectExpandableWidget(QWidget *widget, const QString &name, QWidget *parent);
 
+  DirectExpandableWidget(std::vector<QWidget *> widgets, const QString &name, QWidget *parent);
+
  protected slots:
   virtual void toggleWidgetVisibility();
 };

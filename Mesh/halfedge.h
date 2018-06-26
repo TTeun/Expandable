@@ -14,12 +14,26 @@ class HalfEdge {
 
   size_t getIndex() const;
 
+  const Vertex* getTarget() const;
   Vertex* getTarget();
 
   void setTarget(Vertex* target);
 
+  void setNext(HalfEdge* next) {
+    _next = next;
+    next->_prev = this;
+  }
+
+  HalfEdge* getNext();
+  const HalfEdge* getNext() const;
+
+  HalfEdge* getPrev();
+  const HalfEdge* getPrev() const;
+
  private:
-  Vertex* _target = nullptr;
+  Vertex* _target;
+  HalfEdge* _next;
+  HalfEdge* _prev;
   size_t _index = 0u;
 };
 

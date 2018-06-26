@@ -1,5 +1,7 @@
 #include "openglwidget.h"
 
+#include "../Rendering/meshinterpolator.h"
+
 #include <QCoreApplication>
 #include <QDebug>
 #include <QMouseEvent>
@@ -31,7 +33,6 @@ void OpenGlWidget::cleanup() {
 void OpenGlWidget::initializeGL() {
   qDebug() << "InitializeGl";
   initializeOpenGLFunctions();
-
   glClearColor(1, 1, 1, 1);
 }
 
@@ -39,8 +40,7 @@ void OpenGlWidget::paintGL() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
-
-  for (size_t i = 0; i != _renderObjects.size(); ++i) {
+  for (size_t i = 0; i < _renderObjects.size(); ++i) {
     _renderObjects[i]->render(QOpenGLContext::currentContext()->functions());
   }
 }

@@ -4,9 +4,6 @@
 #include <QPushButton>
 
 static const char* styleSheetString =
-    "QDoubleSpinBox{"
-    " font-size: 10px"
-    "}"
     "QLineEdit{"
     " font-size: 10px"
     "}"

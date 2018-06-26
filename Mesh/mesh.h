@@ -11,7 +11,9 @@ class QString;
 
 class Mesh {
  public:
-  Mesh();
+  enum Preset { Octagon, TwoSquares };
+
+  Mesh(Preset preset = TwoSquares);
 
   static const QString &getName();
 

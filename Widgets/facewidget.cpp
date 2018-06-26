@@ -16,7 +16,7 @@ FaceWidget::FaceWidget(Face *face, QWidget *parent, Mesh *parentObject)
   assert(_face != nullptr);
   _layout->addWidget(new QLabel("val:"), 0, 0, 1, 1);
   _layout->addWidget(WidgetTools::createConstantSpinBox(this, _face->getVal()), 0, 1, 1, 1);
-  QObject::connect(this, &FaceWidget::wasUpdated, UpdateDispatcher::receiveUpdate);
+  //  QObject::connect(this, &FaceWidget::wasUpdated, UpdateDispatcher::receiveUpdate);
 
   qDebug() << "Create FaceWidget";
 }
