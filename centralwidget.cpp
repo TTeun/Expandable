@@ -28,11 +28,11 @@ CentralWidget::CentralWidget(QWidget* parent)
       _treeWidget(std::make_unique<TreeWidget>(this)),
       _openGlWidget(std::make_unique<OpenGlWidget>(this)),
       _viewWidget(std::make_unique<ViewWidget>(_openGlWidget.get(), this)),
-      _meshRenderObject(new MeshRenderObject(&_mesh, 1)),
-      _bSplineRenderer(new BSplineRenderer(&_mesh, 1)),
-      _meshRenderObject2(new MeshRenderObject(&_mesh2, 2)),
-      _bSplineRenderer2(new BSplineRenderer(&_mesh2, 2)),
-      _meshInterpolator(new MeshInterpolator(&_mesh, &_mesh2, 3)) {
+      _meshRenderObject(new MeshRenderObject(&_mesh, RenderObject::Top_Left)),
+      _bSplineRenderer(new BSplineRenderer(&_mesh, RenderObject::Top_Left)),
+      _meshRenderObject2(new MeshRenderObject(&_mesh2, RenderObject::Bottom_Left)),
+      _bSplineRenderer2(new BSplineRenderer(&_mesh2, RenderObject::Bottom_Left)),
+      _meshInterpolator(new MeshInterpolator(&_mesh, &_mesh2, RenderObject::Right)) {
   setObjectName("centralWidget");
   auto* layout = createLayout();
   layout->addWidget(createGroupBox());

@@ -15,12 +15,9 @@ QString RenderObject::getNameOfRenderMode(RenderObject::Render_Mode renderMode) 
   }
 }
 
-RenderObject::RenderObject(size_t quadrant)
-    : _quadrant(quadrant), _indexBufferObject(QOpenGLBuffer::IndexBuffer) {
-}
-
-void RenderObject::setQuadrant(size_t quadrant) {
-  _pointShader->setQuadrant(quadrant);
+RenderObject::RenderObject(Render_Position renderPosition)
+    : _indexBufferObject(QOpenGLBuffer::IndexBuffer) {
+  setTransform(renderPosition);
 }
 
 void RenderObject::render(QOpenGLFunctions *f) {
@@ -31,13 +28,52 @@ void RenderObject::render(QOpenGLFunctions *f) {
   QOpenGLVertexArrayObject::Binder vaoBinder(&_vao);
   for (size_t i = 1u; i != Render_Mode::End; i <<= 1u) {
     if (_renderMode & i) {
-      render(static_cast<RenderObject::Render_Mode>(i));
+      renderObject(static_cast<RenderObject::Render_Mode>(i));
     }
   }
 }
 
 void RenderObject::needsUpdate(bool needsUpdate) {
   _needsUpdate = needsUpdate;
+}
+
+void RenderObject::setTransform(RenderObject::Render_Position renderPosition) {
+  switch (renderPosition) {
+    case RenderObject::Top_Left:
+      setTransform(0.5, 0.5, 0.5);
+      break;
+    case RenderObject::Bottom_Left:
+      setTransform(0.5, -0.5, 0.5);
+      break;
+    case RenderObject::Right:
+      setTransform(-0.5, 0., 0.5);
+      break;
+    case RenderObject::Whole:
+      setTransform(0., 0., 1.);
+      break;
+    default:
+      break;
+  }
+}
+
+void RenderObject::toggleRenderMode(RenderObject::Render_Mode renderMode, bool value) {
+  if (value) {
+    _renderMode |= renderMode;
+  } else {
+    _renderMode &= ~(renderMode);
+  }
+}
+
+void RenderObject::setTransform(float dx, float dy, float scale) {
+  _dx = dx;
+  _dy = dy;
+  _scale = scale;
+  _uniformsNeedUpdate = true;
+}
+
+void RenderObject::setColor(float r, float g, float b, float alpha) {
+  _color = QVector4D(r, g, b, alpha);
+  _uniformsNeedUpdate = true;
 }
 
 void RenderObject::initializeBase(QOpenGLFunctions *f) {
@@ -64,7 +100,6 @@ void RenderObject::initializeBase(QOpenGLFunctions *f) {
   }
   _isInitialized = true;
   _pointShader.reset(new PointShader);
-  _pointShader->setQuadrant(_quadrant);
 }
 
 size_t RenderObject::objectCount() {

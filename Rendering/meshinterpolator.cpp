@@ -5,8 +5,9 @@
 
 double MeshInterpolator::_alpha = 0.5f;
 
-MeshInterpolator::MeshInterpolator(Mesh *mesh1, Mesh *mesh2, size_t quadrant)
-    : RenderObject(quadrant), _mesh1(mesh1), _mesh2(mesh2) {
+MeshInterpolator::MeshInterpolator(Mesh *mesh1, Mesh *mesh2, Render_Position renderPosition)
+    : RenderObject(renderPosition), _mesh1(mesh1), _mesh2(mesh2) {
+  setColor(0.5, 0.5, 0.5);
 }
 
 static QVector2D evaluate(const HalfEdge &halfEdge, double param) {
@@ -54,8 +55,6 @@ void MeshInterpolator::fillData() {
     } else {
       edgeIndex2 = 3;
     }
-    qDebug() << edgeIndex << ", " << edgeIndex2;
-
     for (size_t i = 0; i <= _interpolationPoints; ++i) {
       const double param = static_cast<double>(i) / _interpolationPoints;
       const auto pos1 = evaluate(_mesh1->getHalfEdges()[edgeIndex], param);
@@ -82,23 +81,6 @@ void MeshInterpolator::fillData() {
   //  _mesh2->getVertices()[7].setX(0);
 }
 
-void MeshInterpolator::initialize(QOpenGLFunctions *f) {
-  initializeBase(f);
-}
-
-void MeshInterpolator::render(QOpenGLFunctions *f) {
-  if (not _isInitialized) {
-    initialize(f);
-  }
-  update();
-  QOpenGLVertexArrayObject::Binder vaoBinder(&_vao);
-  for (size_t i = 1u; i != Render_Mode::End; i <<= 1u) {
-    if (_renderMode & i) {
-      render(static_cast<RenderObject::Render_Mode>(i));
-    }
-  }
-}
-
 void MeshInterpolator::update() {
   fillData();
   _vertexPositionBufferObject.bind();
@@ -114,8 +96,13 @@ void MeshInterpolator::update() {
   _needsUpdate = false;
 }
 
-void MeshInterpolator::render(RenderObject::Render_Mode renderMode) {
+void MeshInterpolator::renderObject(RenderObject::Render_Mode renderMode) {
   _pointShader->bind();
+  if (_uniformsNeedUpdate) {
+    _pointShader->setTransformUniforms(_dx, _dy, _scale);
+    _pointShader->setColourUniform(_color[0], _color[1], _color[2], _color[3]);
+    _uniformsNeedUpdate = false;
+  }
   _indexBufferObject.bind();
   switch (renderMode) {
     case RenderObject::Render_Mode::Points:

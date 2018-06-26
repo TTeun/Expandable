@@ -1,7 +1,8 @@
 #include "bsplinerenderer.h"
 
-BSplineRenderer::BSplineRenderer(Mesh *mesh, size_t quadrant)
-    : RenderObject(quadrant), _mesh(mesh) {
+BSplineRenderer::BSplineRenderer(Mesh *mesh, Render_Position renderPosition)
+    : RenderObject(renderPosition), _mesh(mesh) {
+  setColor(0.5, 0.5, 0.5);
 }
 
 void BSplineRenderer::fillData() {
@@ -43,23 +44,6 @@ void BSplineRenderer::fillData() {
   }
 }
 
-void BSplineRenderer::initialize(QOpenGLFunctions *f) {
-  initializeBase(f);
-}
-
-void BSplineRenderer::render(QOpenGLFunctions *f) {
-  if (not _isInitialized) {
-    initialize(f);
-  }
-  update();
-  QOpenGLVertexArrayObject::Binder vaoBinder(&_vao);
-  for (size_t i = 1u; i != Render_Mode::End; i <<= 1u) {
-    if (_renderMode & i) {
-      render(static_cast<RenderObject::Render_Mode>(i));
-    }
-  }
-}
-
 void BSplineRenderer::update() {
   fillData();
   _vertexPositionBufferObject.bind();
@@ -77,8 +61,13 @@ void BSplineRenderer::update() {
   _needsUpdate = false;
 }
 
-void BSplineRenderer::render(RenderObject::Render_Mode renderMode) {
+void BSplineRenderer::renderObject(RenderObject::Render_Mode renderMode) {
   _pointShader->bind();
+  if (_uniformsNeedUpdate) {
+    _pointShader->setTransformUniforms(_dx, _dy, _scale);
+    _pointShader->setColourUniform(_color[0], _color[1], _color[2], _color[3]);
+    _uniformsNeedUpdate = false;
+  }
   _indexBufferObject.bind();
   switch (renderMode) {
     case RenderObject::Render_Mode::Points:

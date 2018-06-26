@@ -14,7 +14,6 @@
 
 MeshWidget::MeshWidget(Mesh *mesh, QWidget *parent, RenderObject *renderObject)
     : TreeWidget(parent), _mesh(mesh), _renderObject(renderObject) {
-  setLayout(new QVBoxLayout);
   addWidget(new DelayedExpandableWidget(VectorWidget<Vertex, VertexWidget>::createWidgetBuilder(
                                             &_mesh->getVertices(), this, renderObject),
                                         "Vertices",

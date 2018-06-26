@@ -7,17 +7,14 @@
 
 class MeshInterpolator : public RenderObject {
  public:
-  MeshInterpolator(Mesh *mesh1, Mesh *mesh2, size_t quadrant = 0);
+  MeshInterpolator(Mesh *mesh1, Mesh *mesh2, Render_Position renderPosition = Whole);
 
   void fillData() override;
-  void initialize(QOpenGLFunctions *f) override;
-  void render(QOpenGLFunctions *f) override;
-
   void update() override;
   static double _alpha;
 
  private:
-  void render(Render_Mode renderMode) override;
+  void renderObject(Render_Mode renderMode) override;
 
   Mesh *_mesh1;
   Mesh *_mesh2;

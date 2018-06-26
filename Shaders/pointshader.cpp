@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <QOpenGLShaderProgram>
+#include <QVector4D>
 
 static const char *vertexShaderSource =
     "#version 330\n"
@@ -17,9 +18,11 @@ static const char *vertexShaderSource =
     "}\n";
 
 static const char *fragmentShaderSource =
+    "#version 330\n"
     "varying highp vec3 vert;\n"
+    "uniform vec4 color = vec4(0.f,0.f,0.f,0.f);\n"
     "void main() {\n"
-    "   gl_FragColor = vec4(0.0,0.0,0.0, 1.0);\n"
+    "   gl_FragColor = color;\n"
     "}\n";
 
 PointShader::PointShader() : _shader(std::make_unique<QOpenGLShaderProgram>()) {
@@ -32,6 +35,7 @@ PointShader::PointShader() : _shader(std::make_unique<QOpenGLShaderProgram>()) {
   _dxLocation = _shader->uniformLocation("dx");
   _dyLocation = _shader->uniformLocation("dy");
   _scaleLocation = _shader->uniformLocation("scale");
+  _colorLocation = _shader->uniformLocation("color");
 }
 
 QOpenGLShaderProgram *PointShader::getShader() {
@@ -46,29 +50,16 @@ void PointShader::release() {
   _shader->release();
 }
 
-void PointShader::setQuadrant(size_t quadrant) {
+void PointShader::setTransformUniforms(float dx, float dy, float scale) {
   _shader->bind();
-  switch (quadrant) {
-    case 0:
-      _shader->setUniformValue(_dxLocation, 0.0f);
-      _shader->setUniformValue(_dyLocation, 0.0f);
-      _shader->setUniformValue(_scaleLocation, 1.0f);
-      break;
-    case 1:
-      _shader->setUniformValue(_dxLocation, 0.5f);
-      _shader->setUniformValue(_dyLocation, 0.5f);
-      _shader->setUniformValue(_scaleLocation, 0.4f);
-      break;
-    case 2:
-      _shader->setUniformValue(_dxLocation, 0.5f);
-      _shader->setUniformValue(_dyLocation, -0.5f);
-      _shader->setUniformValue(_scaleLocation, 0.4f);
-      break;
-    case 3:
-      _shader->setUniformValue(_dxLocation, -0.5f);
-      _shader->setUniformValue(_dyLocation, 0.0f);
-      _shader->setUniformValue(_scaleLocation, 0.4f);
-      break;
-  }
+  _shader->setUniformValue(_dxLocation, dx);
+  _shader->setUniformValue(_dyLocation, dy);
+  _shader->setUniformValue(_scaleLocation, scale);
+  _shader->release();
+}
+
+void PointShader::setColourUniform(float r, float g, float b, float alpha) {
+  _shader->bind();
+  _shader->setUniformValue(_colorLocation, {r, g, b, alpha});
   _shader->release();
 }

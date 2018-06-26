@@ -7,16 +7,13 @@
 
 class BSplineRenderer : public RenderObject {
  public:
-  BSplineRenderer(Mesh* mesh, size_t quadrant = 0);
+  BSplineRenderer(Mesh* mesh, Render_Position renderPosition = Whole);
 
   void fillData() override;
-  void initialize(QOpenGLFunctions* f) override;
-  void render(QOpenGLFunctions* f) override;
-
   void update() override;
 
  private:
-  void render(Render_Mode renderMode) override;
+  void renderObject(Render_Mode renderMode) override;
   Mesh* _mesh;
   size_t _renderMode = Render_Mode::Lines;
   size_t _interpolationPoints = 10u;

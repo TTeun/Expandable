@@ -4,8 +4,9 @@
 
 #include <QOpenGLShaderProgram>
 
-MeshRenderObject::MeshRenderObject(const Mesh *mesh, size_t quadrant)
-    : RenderObject(quadrant), _mesh(mesh) {
+MeshRenderObject::MeshRenderObject(const Mesh *mesh, Render_Position renderPosition)
+    : RenderObject(renderPosition), _mesh(mesh) {
+  _renderMode = Render_Mode::Lines | Render_Mode::Points;
 }
 
 size_t MeshRenderObject::objectCount() {
@@ -33,33 +34,13 @@ void MeshRenderObject::fillData() {
   }
 }
 
-void MeshRenderObject::initialize(QOpenGLFunctions *f) {
-  initializeBase(f);
-}
-
-void MeshRenderObject::render(QOpenGLFunctions *f) {
-  if (not _isInitialized) {
-    initialize(f);
-  }
-  update();
-  QOpenGLVertexArrayObject::Binder vaoBinder(&_vao);
-  for (size_t i = 1u; i != Render_Mode::End; i <<= 1u) {
-    if (_renderMode & i) {
-      render(static_cast<RenderObject::Render_Mode>(i));
-    }
-  }
-}
-
-void MeshRenderObject::toggleRenderMode(RenderObject::Render_Mode renderMode, bool value) {
-  if (value) {
-    _renderMode |= renderMode;
-  } else {
-    _renderMode &= ~(renderMode);
-  }
-}
-
-void MeshRenderObject::render(RenderObject::Render_Mode renderMode) {
+void MeshRenderObject::renderObject(RenderObject::Render_Mode renderMode) {
   _pointShader->bind();
+  if (_uniformsNeedUpdate) {
+    _pointShader->setTransformUniforms(_dx, _dy, _scale);
+    _pointShader->setColourUniform(_color[0], _color[1], _color[2], _color[3]);
+    _uniformsNeedUpdate = false;
+  }
   switch (renderMode) {
     case RenderObject::Render_Mode::Points:
       glPointSize(6);
@@ -68,6 +49,9 @@ void MeshRenderObject::render(RenderObject::Render_Mode renderMode) {
     case RenderObject::Render_Mode::Lines:
       glDrawArrays(GL_LINE_STRIP, 0, objectCount());
       break;
+    case RenderObject::End:
+      throw std::string("Using RenderObject::End as enum in renderObject: ") +
+          std::string(__FILE__);
   }
   _pointShader->release();
 }
