@@ -1,15 +1,19 @@
 #include "bsplinerenderer.h"
 
+#include "../Mesh/mesh.h"
+#include "../Shaders/simpleshader.h"
+#include "../exception.h"
+
+#include <QDebug>
+
 BSplineRenderer::BSplineRenderer(Mesh *mesh, Render_Position renderPosition)
     : RenderObject(renderPosition), _mesh(mesh) {
-  setColor(0.5, 0.5, 0.5);
+  _renderMode = Render_Mode::Lines;
 }
 
 void BSplineRenderer::fillData() {
   _positionData.clear();
   _positionData.squeeze();
-  _normalData.clear();
-  _normalData.squeeze();
   size_t index = 0;
   for (const HalfEdge &halfEdge : _mesh->getHalfEdges()) {
     const Vertex *vertex[4] = {halfEdge.getTarget(),
@@ -32,9 +36,6 @@ void BSplineRenderer::fillData() {
                             vec[2] * vertex[2]->getY() + vec[3] * vertex[3]->getY()) /
                            6.);
       _positionData.append(0);
-      _normalData.append(0);
-      _normalData.append(0);
-      _normalData.append(1);
       if (i != _interpolationPoints) {
         _indices.append(index);
         _indices.append(index + 1);
@@ -42,23 +43,6 @@ void BSplineRenderer::fillData() {
       ++index;
     }
   }
-}
-
-void BSplineRenderer::update() {
-  fillData();
-  _vertexPositionBufferObject.bind();
-  _vertexPositionBufferObject.allocate(_positionData.constData(),
-                                       _positionData.size() * sizeof(GLfloat));
-
-  _indexBufferObject.bind();
-  _indexBufferObject.allocate(_indices.constData(), _indices.size() * sizeof(GLushort));
-  _indexBufferObject.release();
-
-  _vertexPositionBufferObject.release();
-  _vertexNormalBufferObject.bind();
-  _vertexNormalBufferObject.allocate(_normalData.constData(), _normalData.size() * sizeof(GLfloat));
-  _vertexNormalBufferObject.release();
-  _needsUpdate = false;
 }
 
 void BSplineRenderer::renderObject(RenderObject::Render_Mode renderMode) {
@@ -77,6 +61,8 @@ void BSplineRenderer::renderObject(RenderObject::Render_Mode renderMode) {
     case RenderObject::Render_Mode::Lines:
       glDrawElements(GL_LINES, _indices.size(), GL_UNSIGNED_SHORT, 0);
       break;
+    default:
+      THROW_STRING("RenderObject::Render_Mode error");
   }
   _indexBufferObject.release();
   _pointShader->release();

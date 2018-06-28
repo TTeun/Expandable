@@ -2,6 +2,7 @@
 #define EDGE_H
 
 #include <cstddef>
+#include <limits>
 
 class Vertex;
 class QString;
@@ -34,7 +35,7 @@ class HalfEdge {
   Vertex* _target;
   HalfEdge* _next;
   HalfEdge* _prev;
-  size_t _index = 0u;
+  size_t _index = std::numeric_limits<size_t>::max();
 };
 
 #endif  // EDGE_H

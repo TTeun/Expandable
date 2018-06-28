@@ -5,8 +5,6 @@
 
 #include <memory>
 
-#include "Mesh/mesh.h"
-
 class TreeWidget;
 class OpenGlWidget;
 class QGroupBox;
@@ -15,6 +13,8 @@ class ViewWidget;
 class MeshRenderObject;
 class BSplineRenderer;
 class MeshInterpolator;
+class MeshInterpolationSurface;
+class Mesh;
 
 class CentralWidget : public QWidget {
   Q_OBJECT
@@ -34,15 +34,20 @@ class CentralWidget : public QWidget {
   std::unique_ptr<OpenGlWidget> _openGlWidget;
   std::unique_ptr<ViewWidget> _viewWidget;
 
-  MeshRenderObject *_meshRenderObject;
-  BSplineRenderer *_bSplineRenderer;
-  Mesh _mesh = Mesh(Mesh::Octagon);
+  std::unique_ptr<Mesh> _mesh;
+  std::unique_ptr<Mesh> _mesh2;
+  std::unique_ptr<Mesh> _mesh3;
 
+  MeshRenderObject *_meshRenderObject;
   MeshRenderObject *_meshRenderObject2;
+  MeshRenderObject *_meshRenderObject3;
+
+  BSplineRenderer *_bSplineRenderer;
   BSplineRenderer *_bSplineRenderer2;
-  Mesh _mesh2 = Mesh(Mesh::TwoSquares);
+  BSplineRenderer *_bSplineRenderer3;
 
   MeshInterpolator *_meshInterpolator;
+  MeshInterpolationSurface *_meshInterpolationSurface;
 };
 
 #endif  // CENTRALWIDGET_H

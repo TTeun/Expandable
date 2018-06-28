@@ -3,14 +3,13 @@
 
 #include "renderobject.h"
 
-#include "../Mesh/mesh.h"
+class Mesh;
 
 class MeshInterpolator : public RenderObject {
  public:
   MeshInterpolator(Mesh *mesh1, Mesh *mesh2, Render_Position renderPosition = Whole);
 
   void fillData() override;
-  void update() override;
   static double _alpha;
 
  private:
@@ -19,7 +18,6 @@ class MeshInterpolator : public RenderObject {
   Mesh *_mesh1;
   Mesh *_mesh2;
 
-  size_t _renderMode = Render_Mode::Lines;
   size_t _interpolationPoints = 10u;
 };
 

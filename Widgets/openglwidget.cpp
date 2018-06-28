@@ -2,9 +2,7 @@
 
 #include "../Rendering/meshinterpolator.h"
 
-#include <QCoreApplication>
 #include <QDebug>
-#include <QMouseEvent>
 
 OpenGlWidget::OpenGlWidget(QWidget *parent) : QOpenGLWidget(parent) {
 }
@@ -38,23 +36,14 @@ void OpenGlWidget::initializeGL() {
 
 void OpenGlWidget::paintGL() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_CULL_FACE);
-
   for (size_t i = 0; i < _renderObjects.size(); ++i) {
     _renderObjects[i]->render(QOpenGLContext::currentContext()->functions());
-  }
-
-  for (size_t i = 0; i != 40; ++i) {
-    MeshInterpolator::_alpha = i / 20.;
-    _renderObjects[4]->_pointShader->getShader()->bind();
-    _renderObjects[4]->_pointShader->getShader()->setUniformValue(
-        1, 0.5f * static_cast<float>(i - 20.f) / 20.f);
-    _renderObjects[4]->render(QOpenGLContext::currentContext()->functions());
   }
 }
 
 void OpenGlWidget::resizeGL(int w, int h) {
+  Q_UNUSED(w)
+  Q_UNUSED(h)
   //  m_proj.setToIdentity();
   //  m_proj.perspective(45.0f, GLfloat(w) / h, 0.01f, 100.0f);
 }

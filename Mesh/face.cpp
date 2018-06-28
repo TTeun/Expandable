@@ -1,4 +1,5 @@
 #include "face.h"
+#include "halfedge.h"
 
 #include <QString>
 
@@ -16,6 +17,18 @@ size_t Face::getVal() const {
 
 size_t Face::getIndex() const {
   return _index;
+}
+
+void Face::setSide(HalfEdge *side) {
+  _side = side;
+}
+
+void Face::setVal(size_t val) {
+  _val = val;
+}
+
+void Face::setIndex(size_t index) {
+  _index = index;
 }
 
 const HalfEdge *Face::getSide() const {

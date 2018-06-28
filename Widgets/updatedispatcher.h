@@ -2,7 +2,6 @@
 #define UPDATEDISPATCHER_H
 
 #include <QObject>
-#include <unordered_map>
 
 class Mesh;
 class RenderObject;

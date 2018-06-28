@@ -3,7 +3,6 @@
 
 #include <QWidget>
 
-#include <cassert>
 #include <vector>
 
 class QPushButton;
@@ -14,15 +13,9 @@ class ExpandableWidget : public QWidget {
  public:
   explicit ExpandableWidget(const QString &name, QWidget *parent);
 
-  QWidget *getWidget(size_t index) {
-    assert(index < _widgets.size());
-    return _widgets[index];
-  }
+  QWidget *getWidget(size_t index);
 
-  const QWidget *getWidget(size_t index) const {
-    assert(index < _widgets.size());
-    return _widgets[index];
-  }
+  const QWidget *getWidget(size_t index) const;
 
  protected slots:
   virtual void toggleWidgetVisibility() = 0;

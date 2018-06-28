@@ -1,17 +1,17 @@
 #ifndef VECTORWIDGET_H
 #define VECTORWIDGET_H
 
+#include "inspectionwidget.h"
 #include "vectorfullcontentswidgetfactory.h"
+#include "widgettools.h"
 
 #include <QDebug>
-#include <QGridLayout>
 #include <QLabel>
 #include <QString>
 #include <QVBoxLayout>
 #include <QWidget>
+
 #include <vector>
-#include "inspectionwidget.h"
-#include "widgettools.h"
 
 class RenderObject;
 

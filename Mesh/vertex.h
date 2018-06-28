@@ -3,6 +3,8 @@
 
 #include <QVector2D>
 
+#include <limits>
+
 class QString;
 
 class Vertex {
@@ -15,19 +17,22 @@ class Vertex {
   static const QString &getName();
 
   double getX() const;
-  void setX(double x);
   double getY() const;
-  void setY(double y);
   double getZ() const;
+
+  void setX(double x);
+  void setY(double y);
   void setZ(double z);
 
   size_t getIndex() const;
 
  private:
-  double _x = 0.;
-  double _y = 0.;
-  double _z = 0.05;
-  size_t _index = 0u;
+#define declareCoordinate(name) #name
+
+  double _x = 1.;
+  double _y = 1.;
+  double _z = 1.;
+  size_t _index = std::numeric_limits<size_t>::max();
 };
 
 #endif  // VERTEX_H

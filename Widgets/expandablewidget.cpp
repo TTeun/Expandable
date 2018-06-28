@@ -3,6 +3,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
+#include <cassert>
+
 #include "layoutfactory.h"
 
 ExpandableWidget::ExpandableWidget(const QString &name, QWidget *parent)
@@ -18,4 +20,14 @@ ExpandableWidget::ExpandableWidget(const QString &name, QWidget *parent)
     setLayout(layout);
   }
   setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+}
+
+QWidget *ExpandableWidget::getWidget(size_t index) {
+  assert(index < _widgets.size());
+  return _widgets[index];
+}
+
+const QWidget *ExpandableWidget::getWidget(size_t index) const {
+  assert(index < _widgets.size());
+  return _widgets[index];
 }

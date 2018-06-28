@@ -3,8 +3,6 @@
 
 #include "expandablewidget.h"
 
-class QPushButton;
-
 class DirectExpandableWidget : public ExpandableWidget {
   Q_OBJECT
  public:

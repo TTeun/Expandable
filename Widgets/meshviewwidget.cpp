@@ -4,10 +4,7 @@
 #include "openglwidget.h"
 
 #include <QCheckBox>
-#include <QDebug>
 #include <QGridLayout>
-
-#include <functional>
 
 MeshViewWidget::MeshViewWidget(MeshRenderObject *meshRenderObject,
                                OpenGlWidget *openGlWidget,

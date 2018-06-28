@@ -1,12 +1,12 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
-#include "../Rendering/meshrenderobject.h"
-
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
 #include <memory>
 #include <vector>
+
+class RenderObject;
 
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions {
   Q_OBJECT

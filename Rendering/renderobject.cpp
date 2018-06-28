@@ -1,6 +1,8 @@
 #include "renderobject.h"
 
-#include <QDebug>
+#include "../Shaders/simpleshader.h"
+#include "exception.h"
+
 #include <QString>
 
 QString RenderObject::getNameOfRenderMode(RenderObject::Render_Mode renderMode) {
@@ -11,13 +13,21 @@ QString RenderObject::getNameOfRenderMode(RenderObject::Render_Mode renderMode) 
       return QString("Lines");
       break;
     default:
+      THROW_STRING("RenderObject::Render_Mode error");
       break;
   }
+}
+
+bool RenderObject::isInitialized() {
+  return _isInitialized;
 }
 
 RenderObject::RenderObject(Render_Position renderPosition)
     : _indexBufferObject(QOpenGLBuffer::IndexBuffer) {
   setTransform(renderPosition);
+}
+
+RenderObject::~RenderObject() {
 }
 
 void RenderObject::render(QOpenGLFunctions *f) {
@@ -40,13 +50,19 @@ void RenderObject::needsUpdate(bool needsUpdate) {
 void RenderObject::setTransform(RenderObject::Render_Position renderPosition) {
   switch (renderPosition) {
     case RenderObject::Top_Left:
-      setTransform(0.5, 0.5, 0.5);
+      setTransform(-0.5, 0.5, 0.5);
       break;
     case RenderObject::Bottom_Left:
+      setTransform(-0.5, -0.5, 0.5);
+      break;
+    case RenderObject::Top_Right:
+      setTransform(0.5, 0.5, 0.5);
+      break;
+    case RenderObject::Bottom_Right:
       setTransform(0.5, -0.5, 0.5);
       break;
     case RenderObject::Right:
-      setTransform(-0.5, 0., 0.5);
+      setTransform(0.5, 0., 0.5);
       break;
     case RenderObject::Whole:
       setTransform(0., 0., 1.);
@@ -82,8 +98,6 @@ void RenderObject::initializeBase(QOpenGLFunctions *f) {
   Q_UNUSED(vaoBinder);
   _vertexPositionBufferObject.create();
   _vertexPositionBufferObject.setUsagePattern(QOpenGLBuffer::StaticDraw);
-  _vertexNormalBufferObject.create();
-  _vertexNormalBufferObject.setUsagePattern(QOpenGLBuffer::StaticDraw);
   _indexBufferObject.create();
   _indexBufferObject.setUsagePattern(QOpenGLBuffer::StaticDraw);
   _needsUpdate = true;
@@ -92,14 +106,9 @@ void RenderObject::initializeBase(QOpenGLFunctions *f) {
     f->glEnableVertexAttribArray(0);
     f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
     _vertexPositionBufferObject.release();
-
-    _vertexNormalBufferObject.bind();
-    f->glEnableVertexAttribArray(1);
-    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
-    _vertexNormalBufferObject.release();
   }
   _isInitialized = true;
-  _pointShader.reset(new PointShader);
+  _pointShader.reset(new SimpleShader);
 }
 
 size_t RenderObject::objectCount() {
@@ -111,17 +120,14 @@ void RenderObject::initialize(QOpenGLFunctions *f) {
 }
 
 void RenderObject::update() {
-  if (!_needsUpdate) {
-    return;
-  }
   fillData();
   _vertexPositionBufferObject.bind();
   _vertexPositionBufferObject.allocate(_positionData.constData(),
                                        _positionData.size() * sizeof(GLfloat));
+  _indexBufferObject.bind();
+  _indexBufferObject.allocate(_indices.constData(), _indices.size() * sizeof(GLushort));
+  _indexBufferObject.release();
   _vertexPositionBufferObject.release();
-  _vertexNormalBufferObject.bind();
-  _vertexNormalBufferObject.allocate(_normalData.constData(), _normalData.size() * sizeof(GLfloat));
-  _vertexNormalBufferObject.release();
   _needsUpdate = false;
 }
 
@@ -130,6 +136,6 @@ void RenderObject::fillData() {
 
 void RenderObject::cleanUp() {
   _vertexPositionBufferObject.destroy();
-  _vertexNormalBufferObject.destroy();
+  _indexBufferObject.destroy();
   _vao.destroy();
 }

@@ -1,9 +1,6 @@
 #ifndef RENDEROBJECT_H
 #define RENDEROBJECT_H
 
-#include "../Mesh/mesh.h"
-#include "../Shaders/pointshader.h"
-
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
@@ -11,22 +8,21 @@
 #include <QVector4D>
 #include <QVector>
 
+#include <memory>
+
+class SimpleShader;
+
 class RenderObject {
  public:
   enum Render_Mode : size_t { Points = 1u, Lines = 2u, End = 4u };
-  enum Render_Position { Top_Left, Bottom_Left, Right, Whole };
+  enum Render_Position { Top_Left, Bottom_Left, Top_Right, Bottom_Right, Right, Whole };
+
+  RenderObject(Render_Position renderPosition = Whole);
+  virtual ~RenderObject();
 
   static QString getNameOfRenderMode(Render_Mode renderMode);
 
-  RenderObject(Render_Position renderPosition = Whole);
-
-  virtual ~RenderObject() {
-  }
-  bool isInitialized() {
-    return _isInitialized;
-  }
-
-  void setQuadrant(size_t quadrant);
+  bool isInitialized();
 
   virtual void render(QOpenGLFunctions *f);
   virtual size_t objectCount();
@@ -41,7 +37,7 @@ class RenderObject {
   void setTransform(float dx, float dy, float scale = 1.0);
   void setColor(float r, float g, float b, float alpha = 1.0);
 
-  std::unique_ptr<PointShader> _pointShader;
+  std::unique_ptr<SimpleShader> _pointShader;
 
  protected:
   void initializeBase(QOpenGLFunctions *f);
@@ -57,11 +53,9 @@ class RenderObject {
   QOpenGLVertexArrayObject _vao;
 
   QOpenGLBuffer _vertexPositionBufferObject;
-  QOpenGLBuffer _vertexNormalBufferObject;
   QOpenGLBuffer _indexBufferObject;
 
   QVector<GLfloat> _positionData;
-  QVector<GLfloat> _normalData;
   QVector<GLushort> _indices;
 
   size_t _renderMode = Render_Mode::Lines;

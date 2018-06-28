@@ -4,7 +4,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <cassert>
-#include <functional>
+
 #include "../Mesh/vertex.h"
 #include "../Rendering/renderobject.h"
 #include "updatedispatcher.h"

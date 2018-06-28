@@ -1,7 +1,6 @@
 #ifndef VERTEXWIDGET_H
 #define VERTEXWIDGET_H
 
-#include "../Mesh/mesh.h"
 #include "gridwidget.h"
 #include "inspectionwidget.h"
 #include "updatedispatcher.h"

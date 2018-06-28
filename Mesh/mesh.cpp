@@ -4,56 +4,7 @@
 
 #include <cmath>
 
-Mesh::Mesh(Preset preset) {
-  switch (preset) {
-    case Octagon:
-      _vertices.resize(8);
-      _halfEdges.resize(8);
-      _faces.resize(1);
-
-      for (size_t i = 0; i != 8; ++i) {
-        _vertices[i] = (Vertex(cos(i * M_PI * 2. / 8.), sin(i * M_PI * 2. / 8.), i));
-      }
-
-      for (size_t i = 0; i != 8; ++i) {
-        _halfEdges[i].setTarget(&_vertices[i]);
-        _halfEdges[i].setNext(&_halfEdges[(i + 1u) % 8]);
-      }
-
-      _faces[0].setVal(8);
-      _faces[0].setSide(&_halfEdges[0]);
-      break;
-    case TwoSquares:
-      _vertices.resize(8);
-      _halfEdges.resize(8);
-      _faces.resize(2);
-      for (size_t i = 0; i != 4; ++i) {
-        _vertices[i] =
-            (Vertex(0.5 * cos(i * M_PI * 2. / 4.) + 0.5, 0.5 * sin(i * M_PI * 2. / 4.), i));
-      }
-      for (size_t i = 0; i != 4; ++i) {
-        _vertices[i + 4] =
-            (Vertex(0.5 * cos(i * M_PI * 2. / 4.) - 0.5, 0.5 * sin(i * M_PI * 2. / 4.), i));
-      }
-      _vertices[1].setX(0);
-      _vertices[3].setX(0);
-      _vertices[5].setX(0);
-      _vertices[7].setX(0);
-      for (size_t i = 0; i != 4; ++i) {
-        _halfEdges[i].setTarget(&_vertices[i]);
-        _halfEdges[i].setNext(&_halfEdges[(i + 1u) % 4]);
-      }
-
-      for (size_t i = 0; i != 4; ++i) {
-        _halfEdges[i + 4].setTarget(&_vertices[i + 4]);
-        _halfEdges[i + 4].setNext(&_halfEdges[((i + 1u) % 4) + 4]);
-      }
-      _faces[0].setVal(4);
-      _faces[0].setSide(&_halfEdges[0]);
-      _faces[1].setVal(4);
-      _faces[1].setSide(&_halfEdges[5]);
-      break;
-  }
+Mesh::Mesh() {
 }
 
 const QString &Mesh::getName() {
@@ -83,4 +34,22 @@ const std::vector<HalfEdge> &Mesh::getHalfEdges() const {
 
 std::vector<HalfEdge> &Mesh::getHalfEdges() {
   return _halfEdges;
+}
+
+QVector2D Mesh::evaluateCubicBSpline(const HalfEdge &halfEdge, const double param) {
+  const Vertex *vertex[4] = {halfEdge.getPrev()->getPrev()->getTarget(),
+                             halfEdge.getPrev()->getTarget(),
+                             halfEdge.getTarget(),
+                             halfEdge.getNext()->getTarget()};
+  const double t[4] = {param * param * param, param * param, param, 1};
+  const double vec[4] = {-t[0] + 3. * t[1] - 3. * t[2] + t[3],
+                         3. * t[0] - 6. * t[1] + 4. * t[3],
+                         -3. * t[0] + 3. * t[1] + 3. * t[2] + t[3],
+                         t[0]};
+  return QVector2D((vec[0] * vertex[0]->getX() + vec[1] * vertex[1]->getX() +
+                    vec[2] * vertex[2]->getX() + vec[3] * vertex[3]->getX()) /
+                       6.,
+                   (vec[0] * vertex[0]->getY() + vec[1] * vertex[1]->getY() +
+                    vec[2] * vertex[2]->getY() + vec[3] * vertex[3]->getY()) /
+                       6.);
 }

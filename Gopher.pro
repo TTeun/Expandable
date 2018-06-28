@@ -47,11 +47,14 @@ SOURCES += \
     Rendering/meshrenderobject.cpp \
     Widgets/updatedispatcher.cpp \
     Widgets/viewwidget.cpp \
-    Shaders/pointshader.cpp \
-    Shaders/shaderhandler.cpp \
     Widgets/meshviewwidget.cpp \
     Rendering/bsplinerenderer.cpp \
-    Rendering/meshinterpolator.cpp
+    Rendering/meshinterpolator.cpp \
+    Rendering/meshinterpolationsurface.cpp \
+    Mesh/meshfactory.cpp \
+    Shaders/simpleshader.cpp \
+    exception.cpp
+
 
 HEADERS += \
         mainwindow.h \
@@ -80,10 +83,12 @@ HEADERS += \
     Widgets/inspectionwidgetwithparent.h \
     Widgets/updatedispatcher.h \
     Widgets/viewwidget.h \
-    Shaders/pointshader.h \
-    Shaders/shaderhandler.h \
     Widgets/meshviewwidget.h \
     Rendering/bsplinerenderer.h \
-    Rendering/meshinterpolator.h
+    Rendering/meshinterpolator.h \
+    Rendering/meshinterpolationsurface.h \
+    Mesh/meshfactory.h \
+    Shaders/simpleshader.h \
+    exception.h
 
 CONFIG += c++14 -Wall

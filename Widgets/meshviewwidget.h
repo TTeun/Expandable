@@ -7,6 +7,7 @@
 class OpenGlWidget;
 class QGridLayout;
 class MeshRenderObject;
+class RenderObject;
 
 class MeshViewWidget : public QWidget {
   Q_OBJECT

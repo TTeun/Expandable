@@ -1,15 +1,13 @@
-#ifndef POINTSHADER_H
-#define POINTSHADER_H
+#ifndef SIMPLESHADER_H
+#define SIMPLESHADER_H
 
 #include <memory>
 
 class QOpenGLShaderProgram;
 
-class PointShader {
+class SimpleShader {
  public:
-  PointShader();
-
-  QOpenGLShaderProgram* getShader();
+  SimpleShader();
 
   void bind();
   void release();
@@ -26,4 +24,4 @@ class PointShader {
   int _colorLocation;
 };
 
-#endif  // POINTSHADER_H
+#endif  // SIMPLESHADER_H

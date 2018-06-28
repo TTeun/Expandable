@@ -10,18 +10,14 @@ class TreeWidget : public QWidget {
 
  public:
   TreeWidget(QWidget *parent);
-
   TreeWidget(const std::initializer_list<QWidget *> &widgets, QWidget *parent);
 
   void addWidget(QWidget *newWidget);
-
   void addWidgets(const std::initializer_list<QWidget *> &newWidgets);
-
   const std::vector<QWidget *> &widgets() const;
 
  private:
   void initLayout();
-
   std::vector<QWidget *> _widgets;
 };
 

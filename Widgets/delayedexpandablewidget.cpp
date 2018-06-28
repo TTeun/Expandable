@@ -1,7 +1,5 @@
 #include "delayedexpandablewidget.h"
 
-#include "layoutfactory.h"
-
 #include <QPushButton>
 #include <QVBoxLayout>
 

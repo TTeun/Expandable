@@ -1,9 +1,9 @@
 #include "treewidget.h"
 
+#include "layoutfactory.h"
+
 #include <QVBoxLayout>
 #include <algorithm>
-#include "directexpandablewidget.h"
-#include "layoutfactory.h"
 
 TreeWidget::TreeWidget(QWidget *parent) : QWidget(parent) {
   initLayout();

@@ -3,7 +3,6 @@
 #include <QPushButton>
 #include <QString>
 #include <QVBoxLayout>
-#include "layoutfactory.h"
 
 DirectExpandableWidget::DirectExpandableWidget(QWidget *widget,
                                                const QString &name,

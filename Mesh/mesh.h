@@ -1,8 +1,10 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <QVector2D>
 #include <memory>
 #include <vector>
+
 #include "face.h"
 #include "halfedge.h"
 #include "vertex.h"
@@ -11,9 +13,7 @@ class QString;
 
 class Mesh {
  public:
-  enum Preset { Octagon, TwoSquares };
-
-  Mesh(Preset preset = TwoSquares);
+  Mesh();
 
   static const QString &getName();
 
@@ -25,6 +25,8 @@ class Mesh {
 
   const std::vector<HalfEdge> &getHalfEdges() const;
   std::vector<HalfEdge> &getHalfEdges();
+
+  QVector2D evaluateCubicBSpline(const HalfEdge &halfEdge, const double param);
 
  private:
   std::vector<Vertex> _vertices;

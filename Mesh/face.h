@@ -1,11 +1,11 @@
 #ifndef FACE_H
 #define FACE_H
 
-#include "halfedge.h"
-
 #include <cstddef>
+#include <limits>
 
 class QString;
+class HalfEdge;
 
 class Face {
  public:
@@ -15,24 +15,15 @@ class Face {
 
   size_t getVal() const;
   size_t getIndex() const;
-  void setSide(HalfEdge *side) {
-    _side = side;
-  }
-
-  void setVal(size_t val) {
-    _val = val;
-  }
-
-  void setIndex(size_t index) {
-    _index = index;
-  }
-
+  void setSide(HalfEdge *side);
+  void setVal(size_t val);
+  void setIndex(size_t index);
   const HalfEdge *getSide() const;
 
  private:
   HalfEdge *_side;
   size_t _val = 0;
-  size_t _index = 0u;
+  size_t _index = std::numeric_limits<size_t>::max();
 };
 
 #endif  // FACE_H

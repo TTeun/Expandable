@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 
-#include <QGroupBox>
-#include <QPushButton>
+#include "centralwidget.h"
 
 static const char* styleSheetString =
     "QLineEdit{"
