@@ -89,6 +89,6 @@ HEADERS += \
     Rendering/meshinterpolationsurface.h \
     Mesh/meshfactory.h \
     Shaders/simpleshader.h \
-    exception.h
+    exceptiondefines.h
 
 CONFIG += c++14 -Wall

@@ -1,7 +1,7 @@
 #include "meshrenderobject.h"
 
 #include "../Shaders/simpleshader.h"
-#include "../exception.h"
+#include "../exceptiondefines.h"
 
 #include <QOpenGLShaderProgram>
 

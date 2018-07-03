@@ -28,15 +28,19 @@ CentralWidget::CentralWidget(QWidget* parent)
       _treeWidget(std::make_unique<TreeWidget>(this)),
       _openGlWidget(std::make_unique<OpenGlWidget>(this)),
       _viewWidget(std::make_unique<ViewWidget>(_openGlWidget.get(), this)),
+
       _mesh(std::move(MeshFactory::buildNGon(8))),
       _mesh2(std::move(MeshFactory::buildTwoSquares())),
       _mesh3(std::move(MeshFactory::buildTwoSquares_Moved())),
-      _bSplineRenderer(new BSplineRenderer(_mesh.get(), RenderObject::Top_Left)),
-      _bSplineRenderer2(new BSplineRenderer(_mesh2.get(), RenderObject::Bottom_Left)),
-      _bSplineRenderer3(new BSplineRenderer(_mesh3.get(), RenderObject::Bottom_Left)),
+
       _meshRenderObject(new MeshRenderObject(_mesh.get(), RenderObject::Top_Left)),
       _meshRenderObject2(new MeshRenderObject(_mesh2.get(), RenderObject::Bottom_Left)),
       _meshRenderObject3(new MeshRenderObject(_mesh3.get(), RenderObject::Bottom_Left)),
+
+      _bSplineRenderer(new BSplineRenderer(_mesh.get(), RenderObject::Top_Left)),
+      _bSplineRenderer2(new BSplineRenderer(_mesh2.get(), RenderObject::Bottom_Left)),
+      _bSplineRenderer3(new BSplineRenderer(_mesh3.get(), RenderObject::Bottom_Left)),
+
       _meshInterpolator(new MeshInterpolator(_mesh.get(), _mesh2.get(), RenderObject::Top_Right)),
       _meshInterpolationSurface(
           new MeshInterpolationSurface(_mesh.get(), _mesh2.get(), RenderObject::Right)) {

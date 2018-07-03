@@ -2,7 +2,7 @@
 
 #include "../Mesh/mesh.h"
 #include "../Shaders/simpleshader.h"
-#include "../exception.h"
+#include "../exceptiondefines.h"
 
 MeshInterpolationSurface::MeshInterpolationSurface(Mesh *mesh1,
                                                    Mesh *mesh2,
