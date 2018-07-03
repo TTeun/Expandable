@@ -33,7 +33,8 @@ SOURCES += \
     ../../Src/Shaders/simpleshader.cpp \
     ../../Src/DS/ControlNet/edge.cpp \
     ../../Src/DS/ControlNet/vertex.cpp \
-    ../../Src/DS/ControlNet/controlnet.cpp
+    ../../Src/DS/ControlNet/controlnet.cpp \
+    ../../Src/DS/ControlNet/controlnetfactory.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -43,7 +44,8 @@ HEADERS += \
     ../../Src/Shaders/simpleshader.h \
     ../../Src/DS/ControlNet/edge.h \
     ../../Src/DS/ControlNet/vertex.h \
-    ../../Src/DS/ControlNet/controlnet.h
+    ../../Src/DS/ControlNet/controlnet.h \
+    ../../Src/DS/ControlNet/controlnetfactory.h
 
 FORMS += \
         mainwindow.ui
